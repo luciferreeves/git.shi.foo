@@ -1,0 +1,8 @@
+{
+  "extends": [
+    "development"
+  ],
+  "ignoredUrls": [
+    { "domain": "mockups/", "hints": ["*"] }
+  ]
+}

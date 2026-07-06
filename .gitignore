@@ -11,6 +11,9 @@
 # Generated Build Output
 bin/
 
+# Local dev git storage
+.local/
+
 # Test binary, built with `go test -c`
 *.test
 

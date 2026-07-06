@@ -1,0 +1,20 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: gitshifoo-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: gitshifoo
+    ports:
+      - "5432:5432"
+    volumes:
+      - gitshifoo-pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d gitshifoo"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  gitshifoo-pgdata:

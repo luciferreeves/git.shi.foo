@@ -24,3 +24,9 @@ func Count() (int64, error) {
 	result := database.DB.Model(&models.User{}).Count(&total)
 	return total, result.Error
 }
+
+func All() ([]models.User, error) {
+	var records []models.User
+	result := database.DB.Order("created_at desc").Find(&records)
+	return records, result.Error
+}

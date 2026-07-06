@@ -3,6 +3,7 @@
 <h1>git.shi.foo</h1>
 {% if User %}
 <p>Signed in as {{ User.Login }}.</p>
+{% if User.Admin %}<p><a href="{% url "admin.index" %}">Admin</a></p>{% endif %}
 <form method="post" action="{% url "auth.logout" %}">
 <button type="submit">Log out</button>
 </form>

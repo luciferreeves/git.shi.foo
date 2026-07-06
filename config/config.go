@@ -11,6 +11,7 @@ var (
 	Session  session
 	GitHub   github
 	Git      git
+	Mail     mail
 )
 
 func init() {
@@ -32,6 +33,10 @@ func init() {
 
 	if err := env.Parse(&Git); err != nil {
 		logger.Fatalf(LogPrefix, GitConfigFailed, err)
+	}
+
+	if err := env.Parse(&Mail); err != nil {
+		logger.Fatalf(LogPrefix, MailConfigFailed, err)
 	}
 
 	if Server.Debug {

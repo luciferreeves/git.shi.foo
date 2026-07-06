@@ -6,6 +6,7 @@ const (
 	SessionConfigFailed  = "Failed to parse session config: %v"
 	GitHubConfigFailed   = "Failed to parse github config: %v"
 	GitConfigFailed      = "Failed to parse git config: %v"
+	MailConfigFailed     = "Failed to parse mail config: %v"
 	VerificationFailed   = "Configuration verification failed: %v"
 	ConfigLoaded         = "Configuration loaded successfully."
 

@@ -3,9 +3,10 @@ package config
 import "time"
 
 type server struct {
-	Host  string `env:"HOST" default:"0.0.0.0"`
-	Port  int    `env:"PORT" default:"3333"`
-	Debug bool   `env:"DEBUG" default:"false"`
+	Host      string `env:"HOST" default:"0.0.0.0"`
+	Port      int    `env:"PORT" default:"3333"`
+	Debug     bool   `env:"DEBUG" default:"false"`
+	PublicURL string `env:"SERVER_PUBLIC_URL" default:"http://localhost:3333"`
 }
 
 type database struct {
@@ -35,4 +36,12 @@ type git struct {
 	ReposRoot  string `env:"REPOS_ROOT" default:""`
 	SSHHostKey string `env:"SSH_HOST_KEY" default:""`
 	SSHAddress string `env:"SSH_ADDRESS" default:":2222"`
+}
+
+type mail struct {
+	Host     string `env:"SMTP_HOST" default:""`
+	Port     int    `env:"SMTP_PORT" default:"587"`
+	Username string `env:"SMTP_USERNAME" default:""`
+	Password string `env:"SMTP_PASSWORD" default:""`
+	From     string `env:"SMTP_FROM" default:"git.shi.foo <no-reply@localhost>"`
 }

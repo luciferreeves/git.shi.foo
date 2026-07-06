@@ -1,0 +1,33 @@
+{% extends "layouts/base.django" %}
+{% block content %}
+<h1>Admin</h1>
+
+<h2>Invite a user</h2>
+<form method="post" action="{% url "admin.invites" %}">
+<input type="email" name="email" placeholder="GitHub email" required>
+<input type="text" name="username" placeholder="GitHub username" required>
+<button type="submit">Send invite</button>
+</form>
+
+<h2>Invitations</h2>
+<table>
+<thead><tr><th>Email</th><th>Username</th><th>Status</th><th>Created</th></tr></thead>
+<tbody>
+{% for invitation in Invitations %}
+<tr><td>{{ invitation.Email }}</td><td>{{ invitation.Username }}</td><td>{{ invitation.Status }}</td><td>{{ invitation.CreatedAt }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+
+<h2>Users</h2>
+<table>
+<thead><tr><th>Login</th><th>Email</th><th>Admin</th><th>Enabled</th><th>Created</th></tr></thead>
+<tbody>
+{% for member in Users %}
+<tr><td>{{ member.Login }}</td><td>{{ member.Email }}</td><td>{% if member.Admin %}yes{% else %}no{% endif %}</td><td>{% if member.Enabled %}yes{% else %}no{% endif %}</td><td>{{ member.CreatedAt }}</td></tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p><a href="{% url "home" %}">Back to home</a></p>
+{% endblock %}

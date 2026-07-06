@@ -10,6 +10,7 @@ func migrate() {
 		&models.User{},
 		&models.Cache{},
 		&models.Credential{},
+		&models.Invitation{},
 	)
 
 	if migrationError != nil {

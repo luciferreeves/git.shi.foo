@@ -7,6 +7,7 @@ const (
 	UserUpsertLog      = "Failed to persist user: %v"
 	CredentialStoreLog = "Failed to store refresh token: %v"
 	AccessCheckLog     = "Failed to check user count: %v"
+	InviteConsumeLog   = "Failed to consume invitation: %v"
 
 	InvitationRequiredLog = "Rejected login for uninvited user: %s"
 

@@ -9,6 +9,7 @@ func migrate() {
 	migrationError := DB.AutoMigrate(
 		&models.User{},
 		&models.Cache{},
+		&models.Credential{},
 	)
 
 	if migrationError != nil {

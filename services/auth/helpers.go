@@ -7,24 +7,40 @@ import (
 	"git.shi.foo/repositories/credential"
 	"git.shi.foo/repositories/user"
 	"git.shi.foo/utils/github"
+	"git.shi.foo/utils/logger"
+	"git.shi.foo/utils/shortcuts"
 
+	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 )
 
-func upsertUser(providerID string, identity *github.Identity) (*models.User, error) {
+func admitUser(providerID string, identity *github.Identity) (*models.User, *fiber.Error) {
 	existing, findError := user.FindByProviderID(providerID)
-	if findError != nil && !errors.Is(findError, gorm.ErrRecordNotFound) {
-		return nil, findError
-	}
-
 	if findError == nil {
 		existing.Login = identity.Login
 		existing.Email = identity.Email
 		existing.Avatar = identity.AvatarURL
 		if updateError := user.Update(existing); updateError != nil {
-			return nil, updateError
+			logger.Errorf(LogPrefix, UserUpsertLog, updateError)
+			return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, UserUpsertFailed)
 		}
 		return existing, nil
+	}
+
+	if !errors.Is(findError, gorm.ErrRecordNotFound) {
+		logger.Errorf(LogPrefix, UserUpsertLog, findError)
+		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, UserUpsertFailed)
+	}
+
+	total, countError := user.Count()
+	if countError != nil {
+		logger.Errorf(LogPrefix, AccessCheckLog, countError)
+		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, AccessCheckFailed)
+	}
+
+	if total > 0 {
+		logger.Warnf(LogPrefix, InvitationRequiredLog, identity.Login)
+		return nil, shortcuts.ServiceError(fiber.StatusForbidden, InvitationRequired)
 	}
 
 	created := &models.User{
@@ -32,9 +48,12 @@ func upsertUser(providerID string, identity *github.Identity) (*models.User, err
 		Login:      identity.Login,
 		Email:      identity.Email,
 		Avatar:     identity.AvatarURL,
+		Admin:      true,
+		Enabled:    true,
 	}
 	if createError := user.Create(created); createError != nil {
-		return nil, createError
+		logger.Errorf(LogPrefix, UserUpsertLog, createError)
+		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, UserUpsertFailed)
 	}
 
 	return created, nil

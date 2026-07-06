@@ -1,0 +1,6 @@
+{% extends "layouts/base.django" %}
+{% block content %}
+<h1>{{ Code }}</h1>
+<p>{{ Message }}</p>
+<p><a href="{% url "home" %}">Back to home</a></p>
+{% endblock %}

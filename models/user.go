@@ -16,6 +16,8 @@ type User struct {
 	Login      string `gorm:"uniqueIndex;not null"`
 	Email      string `gorm:"index"`
 	Avatar     string `gorm:"type:text"`
+	Admin      bool   `gorm:"not null;default:false"`
+	Enabled    bool   `gorm:"not null;default:true"`
 }
 
 func (self *User) BeforeCreate(tx *gorm.DB) error {
@@ -44,6 +46,8 @@ func (self *User) ToResponse() account.Response {
 		Login:      self.Login,
 		Email:      self.Email,
 		Avatar:     self.Avatar,
+		Admin:      self.Admin,
+		Enabled:    self.Enabled,
 		CreatedAt:  self.CreatedAt,
 	}
 }

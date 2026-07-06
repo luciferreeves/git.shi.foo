@@ -8,5 +8,7 @@ type Response struct {
 	Login      string    `json:"login"`
 	Email      string    `json:"email"`
 	Avatar     string    `json:"avatar"`
+	Admin      bool      `json:"admin"`
+	Enabled    bool      `json:"enabled"`
 	CreatedAt  time.Time `json:"created_at"`
 }

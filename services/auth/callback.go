@@ -26,10 +26,9 @@ func CompleteLogin(userContext context.Context, code string) (string, *fiber.Err
 
 	providerID := strconv.FormatInt(identity.ID, 10)
 
-	storedUser, upsertError := upsertUser(providerID, identity)
-	if upsertError != nil {
-		logger.Errorf(LogPrefix, UserUpsertLog, upsertError)
-		return "", shortcuts.ServiceError(fiber.StatusInternalServerError, UserUpsertFailed)
+	storedUser, admitError := admitUser(providerID, identity)
+	if admitError != nil {
+		return "", admitError
 	}
 
 	if storeError := storeRefreshToken(storedUser.ID, token.RefreshToken); storeError != nil {

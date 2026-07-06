@@ -18,3 +18,9 @@ func Create(record *models.User) error {
 func Update(record *models.User) error {
 	return database.DB.Save(record).Error
 }
+
+func Count() (int64, error) {
+	var total int64
+	result := database.DB.Model(&models.User{}).Count(&total)
+	return total, result.Error
+}

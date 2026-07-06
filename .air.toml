@@ -1,0 +1,12 @@
+root = "."
+tmp_dir = "bin"
+
+[build]
+bin = "./bin/git.shi.foo"
+cmd = "make build"
+include_ext = ["go", "django", "css", "js"]
+exclude_dir = ["tmp", "bin", "toolchain", "node_modules", ".git"]
+delay = 500
+
+[misc]
+clean_on_exit = true

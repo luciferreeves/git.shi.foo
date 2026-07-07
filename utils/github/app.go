@@ -52,13 +52,13 @@ func appJWT() (string, error) {
 	return signingInput + "." + base64URL(signature), nil
 }
 
-func InstallationToken() (string, time.Time, error) {
+func InstallationToken(installationID string) (string, time.Time, error) {
 	token, jwtError := appJWT()
 	if jwtError != nil {
 		return "", time.Time{}, jwtError
 	}
 
-	endpoint := fmt.Sprintf("%s/app/installations/%s/access_tokens", APIBase, config.GitHub.InstallationID)
+	endpoint := fmt.Sprintf("%s/app/installations/%s/access_tokens", APIBase, installationID)
 
 	request, requestError := http.NewRequest(http.MethodPost, endpoint, nil)
 	if requestError != nil {

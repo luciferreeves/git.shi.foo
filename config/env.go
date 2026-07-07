@@ -23,13 +23,12 @@ type session struct {
 }
 
 type github struct {
-	ClientID       string `env:"GITHUB_CLIENT_ID" default:""`
-	ClientSecret   string `env:"GITHUB_CLIENT_SECRET" default:""`
-	CallbackURL    string `env:"GITHUB_CALLBACK_URL" default:"http://localhost:3333/auth/callback"`
-	AppID          string `env:"GITHUB_APP_ID" default:""`
-	AppPrivateKey  string `env:"GITHUB_APP_PRIVATE_KEY" default:""`
-	InstallationID string `env:"GITHUB_INSTALLATION_ID" default:""`
-	EncryptionKey  string `env:"GITHUB_ENCRYPTION_KEY" default:""`
+	ClientID      string `env:"GITHUB_CLIENT_ID" default:""`
+	ClientSecret  string `env:"GITHUB_CLIENT_SECRET" default:""`
+	CallbackURL   string `env:"GITHUB_CALLBACK_URL" default:"http://localhost:3333/auth/callback"`
+	AppID         string `env:"GITHUB_APP_ID" default:""`
+	AppPrivateKey string `env:"GITHUB_APP_PRIVATE_KEY" default:""`
+	EncryptionKey string `env:"GITHUB_ENCRYPTION_KEY" default:""`
 }
 
 type git struct {

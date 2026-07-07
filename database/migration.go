@@ -13,6 +13,7 @@ func migrate() {
 		&models.Invitation{},
 		&models.PersonalAccessToken{},
 		&models.PublicKey{},
+		&models.Repo{},
 	)
 
 	if migrationError != nil {

@@ -1,0 +1,31 @@
+{% extends "layouts/base.django" %}
+{% block content %}
+<h1>Import repositories</h1>
+<p>Pick a repository to mirror to git.shi.foo.</p>
+
+<table>
+<thead><tr><th>Repository</th><th>Visibility</th><th>Description</th><th></th></tr></thead>
+<tbody>
+{% for repository in Repos %}
+<tr>
+<td>{{ repository.FullName }}</td>
+<td>{% if repository.Private %}private{% else %}public{% endif %}</td>
+<td>{{ repository.Description }}</td>
+<td>
+{% if repository.Mirrored %}
+mirrored
+{% else %}
+<form method="post" action="{% url "repos.import.create" %}">
+<input type="hidden" name="owner" value="{{ repository.Owner }}">
+<input type="hidden" name="name" value="{{ repository.Name }}">
+<button type="submit">Import</button>
+</form>
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p><a href="{% url "repos.index" %}">Back to repositories</a></p>
+{% endblock %}

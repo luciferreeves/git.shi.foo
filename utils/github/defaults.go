@@ -13,6 +13,8 @@ const (
 	UserEndpoint       = APIBase + "/user"
 	UserKeysEndpoint   = APIBase + "/user/keys"
 	UserEmailsEndpoint = APIBase + "/user/emails"
+	UserReposEndpoint  = APIBase + "/user/repos?per_page=100&sort=updated"
+	RepoEndpointFormat = APIBase + "/repos/%s/%s"
 	APIVersion         = "2022-11-28"
 	AppJWTLifetime     = 9 * time.Minute
 	AppJWTSkew         = 60 * time.Second

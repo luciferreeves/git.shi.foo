@@ -6,4 +6,6 @@ const (
 	InstallationTokenFailed = "failed to mint installation token: status %d"
 	UserKeysFetchFailed     = "failed to fetch user keys: status %d"
 	UserEmailsFetchFailed   = "failed to fetch user emails: status %d"
+	UserReposFetchFailed    = "failed to fetch user repos: status %d"
+	RepoFetchFailed         = "failed to fetch repo: status %d"
 )

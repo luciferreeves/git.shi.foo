@@ -1,0 +1,21 @@
+{% extends "layouts/base.django" %}
+{% block content %}
+<h1>Repositories</h1>
+<p><a href="{% url "repos.import" %}">Import from GitHub</a></p>
+
+<table>
+<thead><tr><th>Repository</th><th>Visibility</th><th>Status</th><th>Updated</th></tr></thead>
+<tbody>
+{% for repository in Repos %}
+<tr>
+<td>{{ repository.Owner }}/{{ repository.Name }}</td>
+<td>{% if repository.Private %}private{% else %}public{% endif %}</td>
+<td>{{ repository.Status }}</td>
+<td>{{ repository.UpdatedAt }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<p><a href="{% url "home" %}">Back to home</a></p>
+{% endblock %}

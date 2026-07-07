@@ -1,7 +1,8 @@
 package settings
 
 const (
-	LogPrefix     = "Settings"
-	SettingsTitle = "Settings"
-	TokenPrefix   = "gsf_"
+	LogPrefix       = "Settings"
+	SettingsTitle   = "Settings"
+	TokenPrefix     = "shifoo-"
+	DefaultKeyTitle = "SSH key"
 )

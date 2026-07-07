@@ -3,6 +3,7 @@ package settings
 import (
 	"git.shi.foo/account"
 	"git.shi.foo/models"
+	"git.shi.foo/repositories/key"
 	"git.shi.foo/repositories/token"
 	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/shortcuts"
@@ -15,16 +16,39 @@ func GetIndexData(currentUser *account.Response) (*IndexContext, *fiber.Error) {
 		return nil, guardError
 	}
 
-	records, listError := token.ListByUser(currentUser.ID)
-	if listError != nil {
-		logger.Errorf(LogPrefix, TokenListLog, listError)
+	tokens, tokenListError := token.ListByUser(currentUser.ID)
+	if tokenListError != nil {
+		logger.Errorf(LogPrefix, TokenListLog, tokenListError)
 		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, TokenListFailed)
+	}
+
+	keys, keyListError := key.ListByUser(currentUser.ID)
+	if keyListError != nil {
+		logger.Errorf(LogPrefix, KeyListLog, keyListError)
+		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, KeyListFailed)
 	}
 
 	return &IndexContext{
 		Title:  SettingsTitle,
-		Tokens: toTokenViews(records),
+		Tokens: toTokenViews(tokens),
+		Keys:   toKeyViews(keys),
 	}, nil
+}
+
+func toKeyViews(records []models.PublicKey) []KeyView {
+	views := make([]KeyView, 0, len(records))
+	for _, record := range records {
+		views = append(views, KeyView{
+			ID:          record.ID,
+			Title:       record.Title,
+			KeyType:     record.KeyType,
+			Fingerprint: record.Fingerprint,
+			Source:      record.Source,
+			CreatedAt:   record.CreatedAt,
+		})
+	}
+
+	return views
 }
 
 func toTokenViews(records []models.PersonalAccessToken) []TokenView {

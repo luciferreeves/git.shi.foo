@@ -33,5 +33,33 @@
 <button type="submit">Generate token</button>
 </form>
 
+<h2>SSH keys</h2>
+<p>Add a public key to push over SSH to git.shi.foo.</p>
+
+<table>
+<thead><tr><th>Title</th><th>Type</th><th>Fingerprint</th><th>Source</th><th></th></tr></thead>
+<tbody>
+{% for sshkey in Keys %}
+<tr>
+<td>{{ sshkey.Title }}</td>
+<td>{{ sshkey.KeyType }}</td>
+<td>{{ sshkey.Fingerprint }}</td>
+<td>{{ sshkey.Source }}</td>
+<td>
+<form method="post" action="{% url "settings.keys.delete" id=sshkey.ID %}">
+<button type="submit">Remove</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<form method="post" action="{% url "settings.keys.create" %}">
+<input type="text" name="title" placeholder="Key title (optional)">
+<textarea name="key" placeholder="ssh-ed25519 AAAA..." required></textarea>
+<button type="submit">Add key</button>
+</form>
+
 <p><a href="{% url "home" %}">Back to home</a></p>
 {% endblock %}

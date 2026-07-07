@@ -8,4 +8,7 @@ const (
 	UserEmailsFetchFailed   = "failed to fetch user emails: status %d"
 	UserReposFetchFailed    = "failed to fetch user repos: status %d"
 	RepoFetchFailed         = "failed to fetch repo: status %d"
+
+	InstallationsFetchFailed     = "failed to fetch installations: status %d"
+	InstallationReposFetchFailed = "failed to fetch installation repos: status %d"
 )

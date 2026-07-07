@@ -51,9 +51,9 @@ func fetchRepos(requestContext context.Context, userID uint) ([]github.Repositor
 		return nil, shortcuts.ServiceError(fiber.StatusBadGateway, ReposFetchFailed)
 	}
 
-	fetched, fetchError := github.FetchUserRepos(requestContext, accessToken)
-	if fetchError == nil {
-		return fetched, nil
+	collected, collectError := collectRepos(requestContext, accessToken)
+	if collectError == nil {
+		return collected, nil
 	}
 
 	freshToken, refreshError := credentials.RefreshAccessTokenForUser(requestContext, userID)
@@ -62,13 +62,51 @@ func fetchRepos(requestContext context.Context, userID uint) ([]github.Repositor
 		return nil, shortcuts.ServiceError(fiber.StatusBadGateway, ReposFetchFailed)
 	}
 
-	fetched, fetchError = github.FetchUserRepos(requestContext, freshToken)
-	if fetchError != nil {
-		logger.Errorf(LogPrefix, ReposFetchLog, fetchError)
+	collected, collectError = collectRepos(requestContext, freshToken)
+	if collectError != nil {
+		logger.Errorf(LogPrefix, ReposFetchLog, collectError)
 		return nil, shortcuts.ServiceError(fiber.StatusBadGateway, ReposFetchFailed)
 	}
 
-	return fetched, nil
+	return collected, nil
+}
+
+func collectRepos(requestContext context.Context, accessToken string) ([]github.Repository, error) {
+	seen := make(map[int64]bool)
+	collected := make([]github.Repository, 0)
+
+	installations, installationsError := github.FetchUserInstallations(requestContext, accessToken)
+	if installationsError != nil {
+		return nil, installationsError
+	}
+
+	for _, installation := range installations {
+		repositories, reposError := github.FetchInstallationRepos(requestContext, accessToken, installation.ID)
+		if reposError != nil {
+			return nil, reposError
+		}
+
+		for _, repository := range repositories {
+			if !seen[repository.ID] {
+				seen[repository.ID] = true
+				collected = append(collected, repository)
+			}
+		}
+	}
+
+	userRepos, userReposError := github.FetchUserRepos(requestContext, accessToken)
+	if userReposError != nil {
+		return nil, userReposError
+	}
+
+	for _, repository := range userRepos {
+		if !seen[repository.ID] {
+			seen[repository.ID] = true
+			collected = append(collected, repository)
+		}
+	}
+
+	return collected, nil
 }
 
 func mirroredSet() (map[string]bool, error) {

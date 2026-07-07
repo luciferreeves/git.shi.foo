@@ -39,8 +39,17 @@ func ImportKeys(requestContext context.Context, userID uint) *fiber.Error {
 
 	fetched, fetchError := github.FetchUserSSHKeys(requestContext, accessToken)
 	if fetchError != nil {
-		logger.Errorf(LogPrefix, KeyImportLog, fetchError)
-		return shortcuts.ServiceError(fiber.StatusBadGateway, KeyImportFailed)
+		freshToken, refreshError := credentials.RefreshAccessTokenForUser(requestContext, userID)
+		if refreshError != nil {
+			logger.Errorf(LogPrefix, KeyImportLog, refreshError)
+			return shortcuts.ServiceError(fiber.StatusBadGateway, KeyImportFailed)
+		}
+
+		fetched, fetchError = github.FetchUserSSHKeys(requestContext, freshToken)
+		if fetchError != nil {
+			logger.Errorf(LogPrefix, KeyImportLog, fetchError)
+			return shortcuts.ServiceError(fiber.StatusBadGateway, KeyImportFailed)
+		}
 	}
 
 	for _, item := range fetched {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"strconv"
 
+	"git.shi.foo/services/credentials"
 	"git.shi.foo/utils/github"
 	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/shortcuts"
@@ -43,6 +44,8 @@ func CompleteLogin(userContext context.Context, code string) (string, *fiber.Err
 		logger.Errorf(LogPrefix, CredentialStoreLog, storeError)
 		return "", shortcuts.ServiceError(fiber.StatusInternalServerError, CredentialStoreFailed)
 	}
+
+	credentials.SeedAccessToken(storedUser.ID, token.AccessToken, token.Expiry)
 
 	return providerID, nil
 }

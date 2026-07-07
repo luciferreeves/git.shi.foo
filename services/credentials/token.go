@@ -18,6 +18,18 @@ func AccessTokenForUser(requestContext context.Context, userID uint) (string, er
 		return string(entry.Value), nil
 	}
 
+	return mintAccessToken(requestContext, userID)
+}
+
+func RefreshAccessTokenForUser(requestContext context.Context, userID uint) (string, error) {
+	return mintAccessToken(requestContext, userID)
+}
+
+func SeedAccessToken(userID uint, accessToken string, expiry time.Time) {
+	cacheAccessToken(fmt.Sprintf(AccessCacheKeyFormat, userID), accessToken, expiry)
+}
+
+func mintAccessToken(requestContext context.Context, userID uint) (string, error) {
 	stored, findError := credential.FindByUserID(userID)
 	if findError != nil {
 		logger.Errorf(LogPrefix, CredentialMissingLog, findError)
@@ -37,7 +49,7 @@ func AccessTokenForUser(requestContext context.Context, userID uint) (string, er
 	}
 
 	rotateRefreshToken(userID, minted.RefreshToken)
-	cacheAccessToken(cacheKey, minted.AccessToken, minted.Expiry)
+	cacheAccessToken(fmt.Sprintf(AccessCacheKeyFormat, userID), minted.AccessToken, minted.Expiry)
 
 	return minted.AccessToken, nil
 }

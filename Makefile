@@ -1,8 +1,10 @@
 BINARY_NAME = git.shi.foo
 BUILD_PATH = bin/$(BINARY_NAME)
 MAIN_PATH = ./$(BINARY_NAME)
+DB_NAME = $(shell sed -n 's/^DSN=.*dbname=\([^ "]*\).*/\1/p' .env 2>/dev/null)
+DB_USER = $(shell sed -n 's/^DSN=.*[[:space:]]user=\([^ "]*\).*/\1/p' .env 2>/dev/null)
 
-.PHONY: setup clean tidy build run dev all
+.PHONY: setup clean tidy build run dev db-reset all
 
 setup:
 	@go mod download
@@ -24,6 +26,11 @@ run:
 
 dev:
 	@air
+
+db-reset:
+	@docker compose exec -T postgres psql -U $(DB_USER) -d postgres -c "DROP DATABASE IF EXISTS $(DB_NAME) WITH (FORCE);"
+	@docker compose exec -T postgres psql -U $(DB_USER) -d postgres -c "CREATE DATABASE $(DB_NAME);"
+	@echo "DB reset: '$(DB_NAME)' dropped and recreated. Restart the app (stop air, then 'make dev') to re-run migrations."
 
 all: setup clean build run
 

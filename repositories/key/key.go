@@ -32,5 +32,5 @@ func Update(record *models.PublicKey) error {
 }
 
 func Delete(record *models.PublicKey) error {
-	return database.DB.Delete(record).Error
+	return database.DB.Unscoped().Delete(record).Error
 }

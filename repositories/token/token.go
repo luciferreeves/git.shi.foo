@@ -28,5 +28,5 @@ func FindByHash(hash string) (*models.PersonalAccessToken, error) {
 }
 
 func Delete(record *models.PersonalAccessToken) error {
-	return database.DB.Delete(record).Error
+	return database.DB.Unscoped().Delete(record).Error
 }

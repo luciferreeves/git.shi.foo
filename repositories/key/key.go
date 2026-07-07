@@ -27,6 +27,10 @@ func FindByFingerprint(fingerprint string) (*models.PublicKey, error) {
 	return &found, result.Error
 }
 
+func Update(record *models.PublicKey) error {
+	return database.DB.Save(record).Error
+}
+
 func Delete(record *models.PublicKey) error {
 	return database.DB.Delete(record).Error
 }

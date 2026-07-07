@@ -32,7 +32,7 @@ func ImportKeys(context *fiber.Ctx) error {
 		return guardError
 	}
 
-	if importError := servicesettings.ImportKeys(currentUser.ID, currentUser.Login); importError != nil {
+	if importError := servicesettings.ImportKeys(context.UserContext(), currentUser.ID); importError != nil {
 		return importError
 	}
 

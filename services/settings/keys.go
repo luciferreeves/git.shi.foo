@@ -1,11 +1,13 @@
 package settings
 
 import (
+	"context"
 	"errors"
 	"strings"
 
 	"git.shi.foo/models"
 	"git.shi.foo/repositories/key"
+	"git.shi.foo/services/credentials"
 	"git.shi.foo/utils/github"
 	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/shortcuts"
@@ -16,7 +18,7 @@ import (
 )
 
 func AddKey(userID uint, title string, keyText string) *fiber.Error {
-	created, storeError := storeKey(userID, title, keyText, key.SourceManual)
+	created, storeError := storeKey(userID, title, keyText, key.SourceManual, 0)
 	if storeError != nil {
 		return storeError
 	}
@@ -28,16 +30,22 @@ func AddKey(userID uint, title string, keyText string) *fiber.Error {
 	return nil
 }
 
-func ImportKeys(userID uint, login string) *fiber.Error {
-	fetched, fetchError := github.FetchPublicSSHKeys(login)
+func ImportKeys(requestContext context.Context, userID uint) *fiber.Error {
+	accessToken, tokenError := credentials.AccessTokenForUser(requestContext, userID)
+	if tokenError != nil {
+		logger.Errorf(LogPrefix, KeyImportLog, tokenError)
+		return shortcuts.ServiceError(fiber.StatusBadGateway, KeyImportFailed)
+	}
+
+	fetched, fetchError := github.FetchUserSSHKeys(requestContext, accessToken)
 	if fetchError != nil {
 		logger.Errorf(LogPrefix, KeyImportLog, fetchError)
 		return shortcuts.ServiceError(fiber.StatusBadGateway, KeyImportFailed)
 	}
 
-	for _, keyText := range fetched {
-		if _, storeError := storeKey(userID, "", keyText, key.SourceGitHub); storeError != nil {
-			logger.Warnf(LogPrefix, KeyImportSkipLog, keyText)
+	for _, item := range fetched {
+		if _, storeError := storeKey(userID, item.Title, item.Key, key.SourceGitHub, item.ID); storeError != nil {
+			logger.Warnf(LogPrefix, KeyImportSkipLog, item.Key)
 		}
 	}
 
@@ -66,22 +74,13 @@ func RemoveKey(userID uint, keyID uint) *fiber.Error {
 	return nil
 }
 
-func storeKey(userID uint, title string, keyText string, source string) (bool, *fiber.Error) {
+func storeKey(userID uint, title string, keyText string, source string, githubID int64) (bool, *fiber.Error) {
 	parsed, comment, _, _, parseError := ssh.ParseAuthorizedKey([]byte(keyText))
 	if parseError != nil {
 		return false, shortcuts.ServiceError(fiber.StatusBadRequest, InvalidPublicKey)
 	}
 
 	fingerprint := ssh.FingerprintSHA256(parsed)
-
-	existing, findError := key.FindByFingerprint(fingerprint)
-	if findError == nil && existing != nil {
-		return false, nil
-	}
-	if findError != nil && !errors.Is(findError, gorm.ErrRecordNotFound) {
-		logger.Errorf(LogPrefix, KeyAddLog, findError)
-		return false, shortcuts.ServiceError(fiber.StatusInternalServerError, KeyAddFailed)
-	}
 
 	resolvedTitle := strings.TrimSpace(title)
 	if resolvedTitle == "" {
@@ -91,6 +90,24 @@ func storeKey(userID uint, title string, keyText string, source string) (bool, *
 		resolvedTitle = DefaultKeyTitle
 	}
 
+	existing, findError := key.FindByFingerprint(fingerprint)
+	if findError == nil && existing != nil {
+		if existing.UserID == userID && title != "" && existing.Title != resolvedTitle {
+			existing.Title = resolvedTitle
+			existing.Source = source
+			existing.GitHubID = githubID
+			if updateError := key.Update(existing); updateError != nil {
+				logger.Errorf(LogPrefix, KeyAddLog, updateError)
+				return false, shortcuts.ServiceError(fiber.StatusInternalServerError, KeyAddFailed)
+			}
+		}
+		return false, nil
+	}
+	if findError != nil && !errors.Is(findError, gorm.ErrRecordNotFound) {
+		logger.Errorf(LogPrefix, KeyAddLog, findError)
+		return false, shortcuts.ServiceError(fiber.StatusInternalServerError, KeyAddFailed)
+	}
+
 	record := &models.PublicKey{
 		UserID:      userID,
 		Title:       resolvedTitle,
@@ -98,6 +115,7 @@ func storeKey(userID uint, title string, keyText string, source string) (bool, *
 		Fingerprint: fingerprint,
 		Body:        strings.TrimSpace(string(ssh.MarshalAuthorizedKey(parsed))),
 		Source:      source,
+		GitHubID:    githubID,
 	}
 	if createError := key.Create(record); createError != nil {
 		logger.Errorf(LogPrefix, KeyAddLog, createError)

@@ -1,36 +1,41 @@
 package github
 
 import (
+	"context"
+	"encoding/json"
 	"fmt"
-	"io"
 	"net/http"
-	"strings"
 )
 
-func FetchPublicSSHKeys(login string) ([]string, error) {
-	endpoint := fmt.Sprintf(PublicKeysURL, login)
+type SSHKey struct {
+	ID    int64  `json:"id"`
+	Key   string `json:"key"`
+	Title string `json:"title"`
+}
 
-	response, responseError := http.Get(endpoint)
+func FetchUserSSHKeys(requestContext context.Context, accessToken string) ([]SSHKey, error) {
+	request, requestError := http.NewRequestWithContext(requestContext, http.MethodGet, UserKeysEndpoint, nil)
+	if requestError != nil {
+		return nil, requestError
+	}
+
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Accept", "application/vnd.github+json")
+	request.Header.Set("X-GitHub-Api-Version", APIVersion)
+
+	response, responseError := http.DefaultClient.Do(request)
 	if responseError != nil {
 		return nil, responseError
 	}
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf(PublicKeysFetchFailed, response.StatusCode)
+		return nil, fmt.Errorf(UserKeysFetchFailed, response.StatusCode)
 	}
 
-	body, readError := io.ReadAll(response.Body)
-	if readError != nil {
-		return nil, readError
-	}
-
-	keys := make([]string, 0)
-	for _, line := range strings.Split(string(body), "\n") {
-		trimmed := strings.TrimSpace(line)
-		if trimmed != "" {
-			keys = append(keys, trimmed)
-		}
+	var keys []SSHKey
+	if decodeError := json.NewDecoder(response.Body).Decode(&keys); decodeError != nil {
+		return nil, decodeError
 	}
 
 	return keys, nil

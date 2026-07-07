@@ -24,6 +24,14 @@ func CompleteLogin(userContext context.Context, code string) (string, *fiber.Err
 		return "", shortcuts.ServiceError(fiber.StatusBadGateway, IdentityFetchFailed)
 	}
 
+	if identity.Email == "" {
+		if primaryEmail, emailError := github.FetchPrimaryEmail(userContext, token); emailError != nil {
+			logger.Errorf(LogPrefix, EmailFetchLog, emailError)
+		} else {
+			identity.Email = primaryEmail
+		}
+	}
+
 	providerID := strconv.FormatInt(identity.ID, 10)
 
 	storedUser, admitError := admitUser(providerID, identity)

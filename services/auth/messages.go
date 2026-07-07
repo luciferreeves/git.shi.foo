@@ -8,6 +8,7 @@ const (
 	CredentialStoreLog = "Failed to store refresh token: %v"
 	AccessCheckLog     = "Failed to check user count: %v"
 	InviteConsumeLog   = "Failed to consume invitation: %v"
+	EmailFetchLog      = "Failed to fetch primary email: %v"
 
 	InvitationRequiredLog = "Rejected login for uninvited user: %s"
 

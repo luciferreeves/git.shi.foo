@@ -4,5 +4,6 @@ const (
 	CiphertextTooShort      = "ciphertext too short"
 	PrivateKeyInvalid       = "github app private key is not valid PEM"
 	InstallationTokenFailed = "failed to mint installation token: status %d"
-	PublicKeysFetchFailed   = "failed to fetch public keys: status %d"
+	UserKeysFetchFailed     = "failed to fetch user keys: status %d"
+	UserEmailsFetchFailed   = "failed to fetch user emails: status %d"
 )

@@ -32,11 +32,12 @@ func Callback(context *fiber.Ctx) error {
 		return loginError
 	}
 
-	if sessionError := sessions.CreateSession(session, providerID); sessionError != nil {
+	session.Delete(github.StateKey)
+	session.Set(sessions.SessionAuthKey, providerID)
+
+	if saveError := session.Save(); saveError != nil {
 		return shortcuts.ServiceError(fiber.StatusInternalServerError, SessionStartFailed)
 	}
-
-	_ = sessions.Delete(session, github.StateKey)
 
 	return shortcuts.RedirectToPath(context, "/")
 }

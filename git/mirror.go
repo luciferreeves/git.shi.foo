@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 )
 
 func Mirror(owner string, name string, token string) error {
@@ -16,15 +17,20 @@ func Mirror(owner string, name string, token string) error {
 		return fmt.Errorf(MkdirFailed, mkdirError)
 	}
 
-	authURL := fmt.Sprintf(AuthCloneURLFormat, token, owner, name)
-	cloneCommand := exec.Command("git", "clone", "--mirror", authURL, destination)
-	if output, cloneError := cloneCommand.CombinedOutput(); cloneError != nil {
-		return fmt.Errorf(CloneFailed, cloneError, string(output))
-	}
-
 	cleanURL := fmt.Sprintf(CleanCloneURLFormat, owner, name)
-	resetCommand := exec.Command("git", "-C", destination, "remote", "set-url", "origin", cleanURL)
-	_ = resetCommand.Run()
+
+	cloneCommand := exec.Command(
+		"git",
+		"-c", "credential.helper=",
+		"-c", CredentialHelper,
+		"clone", "--mirror", cleanURL, destination,
+	)
+	cloneCommand.Env = append(os.Environ(), GitTokenEnv+"="+token)
+
+	if output, cloneError := cloneCommand.CombinedOutput(); cloneError != nil {
+		scrubbed := strings.ReplaceAll(string(output), token, RedactedToken)
+		return fmt.Errorf(CloneFailed, cloneError, scrubbed)
+	}
 
 	return nil
 }

@@ -11,6 +11,7 @@ func migrate() {
 		&models.Cache{},
 		&models.Credential{},
 		&models.Invitation{},
+		&models.PersonalAccessToken{},
 	)
 
 	if migrationError != nil {

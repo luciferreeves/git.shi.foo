@@ -1,0 +1,37 @@
+{% extends "layouts/base.django" %}
+{% block content %}
+<h1>Settings</h1>
+
+<h2>Access tokens</h2>
+<p>Use a token as the password when cloning or pushing over HTTPS to git.shi.foo.</p>
+
+{% if NewToken %}
+<p><strong>Copy your new token now — it won't be shown again:</strong></p>
+<pre>{{ NewToken }}</pre>
+{% endif %}
+
+<table>
+<thead><tr><th>Label</th><th>Token</th><th>Created</th><th></th></tr></thead>
+<tbody>
+{% for pat in Tokens %}
+<tr>
+<td>{{ pat.Label }}</td>
+<td>{{ pat.Preview }}</td>
+<td>{{ pat.CreatedAt }}</td>
+<td>
+<form method="post" action="{% url "settings.tokens.delete" id=pat.ID %}">
+<button type="submit">Revoke</button>
+</form>
+</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<form method="post" action="{% url "settings.tokens.create" %}">
+<input type="text" name="label" placeholder="Token label" required>
+<button type="submit">Generate token</button>
+</form>
+
+<p><a href="{% url "home" %}">Back to home</a></p>
+{% endblock %}

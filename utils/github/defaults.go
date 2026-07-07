@@ -11,6 +11,7 @@ const (
 	QueryParamState = "state"
 	APIBase         = "https://api.github.com"
 	UserEndpoint    = APIBase + "/user"
+	PublicKeysURL   = "https://github.com/%s.keys"
 	APIVersion      = "2022-11-28"
 	AppJWTLifetime  = 9 * time.Minute
 	AppJWTSkew      = 60 * time.Second

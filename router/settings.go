@@ -13,5 +13,6 @@ func init() {
 	urls.Path(urls.Post, "/tokens", controller.CreateToken, "tokens.create")
 	urls.Path(urls.Post, "/tokens/:id/delete", controller.RevokeToken, "tokens.delete")
 	urls.Path(urls.Post, "/keys", controller.AddKey, "keys.create")
+	urls.Path(urls.Post, "/keys/import", controller.ImportKeys, "keys.import")
 	urls.Path(urls.Post, "/keys/:id/delete", controller.RemoveKey, "keys.delete")
 }

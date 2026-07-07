@@ -8,6 +8,8 @@ const (
 	KeyAddLog        = "Failed to add public key: %v"
 	KeyRemoveLog     = "Failed to remove public key: %v"
 	KeyListLog       = "Failed to list public keys: %v"
+	KeyImportLog     = "Failed to fetch GitHub public keys: %v"
+	KeyImportSkipLog = "Skipped an unparseable imported key: %s"
 
 	AuthRequired      = "Sign in required."
 	LabelRequired     = "A label is required."
@@ -24,4 +26,5 @@ const (
 	KeyNotFound      = "Key not found."
 	KeyNotYours      = "That key is not yours."
 	KeyRemoveFailed  = "Could not remove the key."
+	KeyImportFailed  = "Could not fetch your keys from GitHub."
 )

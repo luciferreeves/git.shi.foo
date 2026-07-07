@@ -26,6 +26,19 @@ func AddKey(context *fiber.Ctx) error {
 	return shortcuts.Redirect(context, "settings.index")
 }
 
+func ImportKeys(context *fiber.Ctx) error {
+	currentUser := meta.User(context)
+	if guardError := servicesettings.EnsureUser(currentUser); guardError != nil {
+		return guardError
+	}
+
+	if importError := servicesettings.ImportKeys(currentUser.ID, currentUser.Login); importError != nil {
+		return importError
+	}
+
+	return shortcuts.Redirect(context, "settings.index")
+}
+
 func RemoveKey(context *fiber.Ctx) error {
 	currentUser := meta.User(context)
 	if guardError := servicesettings.EnsureUser(currentUser); guardError != nil {

@@ -1,0 +1,28 @@
+.footer {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-7);
+  height: var(--footer-h);
+  padding: 0 var(--sp-3);
+  border-top: var(--bw) solid var(--border2);
+  color: var(--dim);
+  font-size: var(--fs-xs);
+}
+
+.footer-divider {
+  color: var(--faint);
+}
+
+.footer-emphasis {
+  color: var(--cyan);
+}
+
+.footer-end {
+  display: flex;
+  gap: var(--sp-7);
+  margin-left: auto;
+}
+
+.footer-language a {
+  color: var(--cyandim);
+}

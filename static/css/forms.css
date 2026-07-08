@@ -1,0 +1,59 @@
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+  height: var(--field-h);
+  padding: 0 var(--sp-4);
+  background: var(--rowalt);
+  border: var(--bw) solid var(--border2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: var(--fs-sm);
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--cyandim);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: var(--faint);
+}
+
+textarea {
+  display: block;
+  width: 100%;
+  height: auto;
+  min-height: calc(var(--field-h) * 3);
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-4);
+  resize: vertical;
+}
+
+button,
+.button {
+  height: var(--field-h);
+  padding: 0 var(--sp-6);
+  background: var(--head);
+  border: var(--bw) solid var(--border2);
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  cursor: pointer;
+}
+
+button:hover,
+.button:hover {
+  border-color: var(--cyandim);
+  color: #fff;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-7);
+}

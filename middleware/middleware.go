@@ -6,4 +6,5 @@ func Initialize(application *fiber.App) {
 	application.Use(userSession)
 	application.Use(resolveUser)
 	application.Use(request)
+	application.Use(chrome)
 }

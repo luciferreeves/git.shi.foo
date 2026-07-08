@@ -1,0 +1,41 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: var(--wrap-max);
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 var(--wrap-pad);
+}
+
+.page-content {
+  flex: 1 1 auto;
+  padding: var(--sp-10) var(--sp-2) var(--sp-16);
+}
+
+.page-content > h1 {
+  margin-bottom: var(--sp-8);
+  color: #fff;
+  font-size: var(--fs-xl);
+  font-weight: 700;
+  letter-spacing: var(--ls-1);
+}
+
+.page-content h2 {
+  margin: var(--sp-12) 0 var(--sp-5);
+  color: var(--cyan);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: var(--ls-2);
+  text-transform: uppercase;
+}
+
+.page-content h2:first-of-type {
+  margin-top: var(--sp-3);
+}
+
+.page-content p {
+  max-width: 76ch;
+  margin-bottom: var(--sp-6);
+  color: var(--dim);
+}

@@ -1,0 +1,40 @@
+<header class="topbar">
+  <a class="brand" href="{% url "home" %}">git.shi.foo</a>
+  <span class="brand-version">{{ Version }}</span>
+  <nav class="top-nav">
+    <a class="nav-item{% if "home"|active:Request.Path %} is-active{% endif %}" href="{% url "home" %}"><span class="nav-bracket">[</span>home<span class="nav-bracket">]</span></a>
+    <a class="nav-item{% if "repos.index"|active:Request.Path %} is-active{% endif %}" href="{% url "repos.index" %}"><span class="nav-bracket">[</span>repositories<span class="nav-bracket">]</span></a>
+    <a class="nav-item is-disabled"><span class="nav-bracket">[</span>organizations<span class="nav-bracket">]</span></a>
+    <a class="nav-item is-disabled"><span class="nav-bracket">[</span>folios<span class="nav-bracket">]</span></a>
+    <a class="nav-item is-disabled"><span class="nav-bracket">[</span>journal<span class="nav-bracket">]</span></a>
+    <a class="nav-item is-disabled"><span class="nav-bracket">[</span>users<span class="nav-bracket">]</span></a>
+  </nav>
+  <div class="top-user">
+    {% if User %}
+    <div class="user-menu">
+      <button class="user-menu-toggle" id="user-menu-toggle" type="button">
+        <span class="avatar"><span class="avatar-face text-green">^_^</span></span>
+        <span class="user-menu-username">{{ User.Login }}</span>
+        <span class="user-menu-caret">▾</span>
+      </button>
+      <div class="user-menu-panel" id="user-menu-panel">
+        <div class="user-menu-header">
+          <span class="avatar"><span class="avatar-face text-green">^_^</span></span>
+          <div>
+            <div class="user-menu-name">{{ User.Login }}</div>
+            <div class="user-menu-role">signed in</div>
+          </div>
+        </div>
+        <a class="user-menu-item" href="{% url "settings.index" %}">Settings</a>
+        {% if User.Admin %}<a class="user-menu-item" href="{% url "admin.index" %}">Admin</a>{% endif %}
+        <div class="user-menu-divider"></div>
+        <form method="post" action="{% url "auth.logout" %}">
+          <button class="user-menu-item is-danger" type="submit">Log out</button>
+        </form>
+      </div>
+    </div>
+    {% else %}
+    <a class="login-link" href="{% url "auth.login" %}">[ log in ]</a>
+    {% endif %}
+  </div>
+</header>

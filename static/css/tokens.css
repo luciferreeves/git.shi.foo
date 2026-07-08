@@ -1,0 +1,45 @@
+:root {
+  --sp-1: 2px;
+  --sp-2: 4px;
+  --sp-3: 6px;
+  --sp-4: 8px;
+  --sp-5: 10px;
+  --sp-6: 12px;
+  --sp-7: 14px;
+  --sp-8: 16px;
+  --sp-9: 18px;
+  --sp-10: 20px;
+  --sp-12: 24px;
+  --sp-16: 32px;
+
+  --fs-micro: 9px;
+  --fs-tiny: 10px;
+  --fs-xs: 11px;
+  --fs-sm: 12px;
+  --fs-md: 13px;
+  --fs-lg: 15px;
+  --fs-xl: 16px;
+  --fs-2xl: 19px;
+
+  --lh: 1.55;
+
+  --ls-tight: -1px;
+  --ls-1: 0.5px;
+  --ls-2: 1px;
+
+  --bw: 1px;
+  --radius: 0px;
+
+  --wrap-min: 1200px;
+  --wrap-max: 1760px;
+  --wrap-pad: 14px;
+
+  --topbar-h: 46px;
+  --footer-h: 34px;
+  --row-h: 32px;
+  --field-h: 30px;
+
+  --avatar: 20px;
+  --avatar-sm: 17px;
+  --menu-w: 212px;
+}

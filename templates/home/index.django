@@ -1,15 +1,9 @@
 {% extends "layouts/base.django" %}
 {% block content %}
 <h1>git.shi.foo</h1>
-<p><a href="{% url "repos.index" %}">Repositories</a></p>
 {% if User %}
-<p>Signed in as {{ User.Login }}.</p>
-<p><a href="{% url "settings.index" %}">Settings</a></p>
-{% if User.Admin %}<p><a href="{% url "admin.index" %}">Admin</a></p>{% endif %}
-<form method="post" action="{% url "auth.logout" %}">
-<button type="submit">Log out</button>
-</form>
+<p>Welcome back, <span class="text-purple">{{ User.Login }}</span>.</p>
 {% else %}
-<p><a href="{% url "auth.login" %}">Log in with GitHub</a></p>
+<p>A self-hosted git front-end and push-proxy over GitHub. <a href="{% url "auth.login" %}">Log in with GitHub</a> to get started.</p>
 {% endif %}
 {% endblock %}

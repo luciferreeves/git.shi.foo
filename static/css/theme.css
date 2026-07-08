@@ -1,0 +1,31 @@
+:root {
+  color-scheme: dark;
+
+  --bg: #070910;
+  --panel: #0a0d15;
+  --head: #0c1019;
+  --row: #0b0e16;
+  --rowalt: #090c13;
+
+  --border: #1a1f2e;
+  --border2: #262d40;
+
+  --text: #c2c7d2;
+  --dim: #676d80;
+  --faint: #444a5b;
+
+  --cyan: #54c6d6;
+  --cyanlink: #69b6c9;
+  --cyandim: #3a8390;
+  --purple: #9d8af0;
+  --purplebr: #b6a4ff;
+  --green: #5fd06b;
+  --magenta: #d877b5;
+  --yellow: #d6b45f;
+
+  --sel: #211b46;
+  --selbar: #9d8af0;
+
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', 'Cascadia Code', Menlo, Consolas,
+    'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', monospace;
+}

@@ -10,6 +10,9 @@ const (
 	SizeFormatB  = "%d B"
 	DirSizeLabel = "-"
 
-	bytesPerKB = 1 << 10
-	bytesPerMB = 1 << 20
+	PlainFormat = "<pre class=\"blob-code-plain\">%s</pre>"
+
+	bytesPerKB       = 1 << 10
+	bytesPerMB       = 1 << 20
+	binarySniffLimit = 8000
 )

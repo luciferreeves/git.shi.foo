@@ -36,6 +36,12 @@ type EntryView struct {
 	Size      int64
 	SizeLabel string
 	IsDir     bool
+	URL       string
+}
+
+type Crumb struct {
+	Name string
+	URL  string
 }
 
 type CommitView struct {
@@ -55,6 +61,20 @@ type ShowContext struct {
 	Status        string
 	CloneURL      string
 	Ready         bool
+	Path          string
+	Crumbs        []Crumb
 	LatestCommit  *CommitView
 	Entries       []EntryView
+}
+
+type BlobContext struct {
+	Title     string
+	Owner     string
+	Name      string
+	Path      string
+	Filename  string
+	Crumbs    []Crumb
+	Content   string
+	IsBinary  bool
+	SizeLabel string
 }

@@ -1,0 +1,40 @@
+{% extends "layouts/base.django" %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block content %}
+<div class="repo-header">
+  <div class="repo-identity">
+    <a class="repo-name" href="/{{ Owner }}/{{ Name }}">{{ Owner }}/{{ Name }}</a>
+  </div>
+</div>
+
+<nav class="repo-tabs">
+  <a class="repo-tab is-active" href="/{{ Owner }}/{{ Name }}">files</a>
+  <a class="repo-tab is-disabled">commits</a>
+  <a class="repo-tab is-disabled">branches</a>
+  <a class="repo-tab is-disabled">tags</a>
+  <a class="repo-tab is-disabled">contributors</a>
+  <a class="repo-tab is-disabled">settings</a>
+</nav>
+
+<nav class="repo-breadcrumbs">
+  <a class="repo-crumb" href="/{{ Owner }}/{{ Name }}">{{ Name }}</a>
+  {% for crumb in Crumbs %}
+  <span class="repo-crumb-separator">/</span>
+  <a class="repo-crumb" href="{{ crumb.URL }}">{{ crumb.Name }}</a>
+  {% endfor %}
+  <span class="repo-crumb-separator">/</span>
+  <span class="repo-crumb is-current">{{ Filename }}</span>
+</nav>
+
+<div class="blob-panel">
+  <div class="blob-toolbar">
+    <span class="blob-filename">{{ Filename }}</span>
+    <span class="blob-size">{{ SizeLabel }}</span>
+  </div>
+  {% if IsBinary %}
+  <div class="blob-binary">Binary file not shown.</div>
+  {% else %}
+  <div class="blob-code">{{ Content|safe }}</div>
+  {% endif %}
+</div>
+{% endblock %}

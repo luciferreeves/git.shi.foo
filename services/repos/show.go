@@ -1,9 +1,11 @@
 package repos
 
 import (
+	"context"
 	"errors"
 	"fmt"
 
+	"git.shi.foo/account"
 	"git.shi.foo/config"
 	"git.shi.foo/git"
 	"git.shi.foo/repositories/repo"
@@ -14,7 +16,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetShowData(owner string, name string) (*ShowContext, *fiber.Error) {
+func GetShowData(requestContext context.Context, currentUser *account.Response, owner string, name string, path string) (*ShowContext, *fiber.Error) {
 	record, findError := repo.FindByOwnerName(owner, name)
 	if findError != nil {
 		if errors.Is(findError, gorm.ErrRecordNotFound) {
@@ -22,6 +24,10 @@ func GetShowData(owner string, name string) (*ShowContext, *fiber.Error) {
 		}
 		logger.Errorf(LogPrefix, ListLog, findError)
 		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, ListFailed)
+	}
+
+	if viewError := ensureViewable(requestContext, currentUser, record); viewError != nil {
+		return nil, viewError
 	}
 
 	showContext := &ShowContext{
@@ -34,14 +40,16 @@ func GetShowData(owner string, name string) (*ShowContext, *fiber.Error) {
 		Status:        record.Status,
 		CloneURL:      fmt.Sprintf("%s/%s/%s.git", config.Server.PublicURL, record.Owner, record.Name),
 		Ready:         record.Status == repo.StatusActive,
+		Path:          path,
+		Crumbs:        buildCrumbs(record.Owner, record.Name, path),
 	}
 
 	if !showContext.Ready {
 		return showContext, nil
 	}
 
-	if entries, treeError := git.Tree(record.Owner, record.Name, git.HeadRef); treeError == nil {
-		showContext.Entries = toEntryViews(entries)
+	if entries, treeError := git.Tree(record.Owner, record.Name, git.HeadRef, path); treeError == nil {
+		showContext.Entries = toEntryViews(entries, record.Owner, record.Name, path)
 	}
 
 	if commit, commitError := git.LatestCommit(record.Owner, record.Name, git.HeadRef); commitError == nil {
@@ -56,11 +64,12 @@ func GetShowData(owner string, name string) (*ShowContext, *fiber.Error) {
 	return showContext, nil
 }
 
-func toEntryViews(entries []git.TreeEntry) []EntryView {
+func toEntryViews(entries []git.TreeEntry, owner string, name string, path string) []EntryView {
 	directories := make([]EntryView, 0)
 	files := make([]EntryView, 0)
 
 	for _, entry := range entries {
+		full := childPath(path, entry.Name)
 		view := EntryView{
 			Type:      entry.Type,
 			Name:      entry.Name,
@@ -69,8 +78,10 @@ func toEntryViews(entries []git.TreeEntry) []EntryView {
 			IsDir:     entry.Type == git.TypeTree,
 		}
 		if view.IsDir {
+			view.URL = treeURL(owner, name, full)
 			directories = append(directories, view)
 		} else {
+			view.URL = blobURL(owner, name, full)
 			view.SizeLabel = humanSize(entry.Size)
 			files = append(files, view)
 		}

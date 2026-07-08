@@ -11,8 +11,13 @@ type TreeEntry struct {
 	Size int64
 }
 
-func Tree(owner string, name string, ref string) ([]TreeEntry, error) {
-	output, runError := runGit(RepoPath(owner, name), "ls-tree", "-l", ref)
+func Tree(owner string, name string, ref string, path string) ([]TreeEntry, error) {
+	treeish := ref
+	if path != "" {
+		treeish = ref + ":" + path
+	}
+
+	output, runError := runGit(RepoPath(owner, name), "ls-tree", "-l", treeish)
 	if runError != nil {
 		return nil, runError
 	}

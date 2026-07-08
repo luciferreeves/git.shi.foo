@@ -44,12 +44,21 @@
 </div>
 {% endif %}
 
+<nav class="repo-breadcrumbs">
+  <a class="repo-crumb" href="/{{ Owner }}/{{ Name }}">{{ Name }}</a>
+  {% for crumb in Crumbs %}
+  <span class="repo-crumb-separator">/</span>
+  {% if forloop.Last %}<span class="repo-crumb is-current">{{ crumb.Name }}</span>
+  {% else %}<a class="repo-crumb" href="{{ crumb.URL }}">{{ crumb.Name }}</a>{% endif %}
+  {% endfor %}
+</nav>
+
 <table class="file-table">
 <thead><tr><th>name</th><th class="file-size">size</th></tr></thead>
 <tbody>
 {% for entry in Entries %}
 <tr>
-<td class="file-name{% if entry.IsDir %} is-dir{% endif %}">{{ entry.Name }}{% if entry.IsDir %}/{% endif %}</td>
+<td class="file-name{% if entry.IsDir %} is-dir{% endif %}"><a class="file-link" href="{{ entry.URL }}">{{ entry.Name }}{% if entry.IsDir %}/{% endif %}</a></td>
 <td class="file-size">{{ entry.SizeLabel }}</td>
 </tr>
 {% endfor %}

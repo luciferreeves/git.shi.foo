@@ -18,7 +18,8 @@ while read old new ref; do
 	fi
 done
 [ -z "$refspecs" ] && exit 0
-exec git -c remote.origin.mirror=false push --atomic origin $refspecs
+url=$(git remote get-url origin) || exit 1
+exec git push --atomic "$url" $refspecs
 `
 
 func HooksDir() string {

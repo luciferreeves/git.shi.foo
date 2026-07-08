@@ -3,7 +3,9 @@ module git.shi.foo
 go 1.25.5
 
 require (
+	github.com/alecthomas/chroma/v2 v2.27.0
 	github.com/flosch/pongo2/v6 v6.1.0
+	github.com/gliderlabs/ssh v0.3.8
 	github.com/gofiber/fiber/v2 v2.52.14
 	github.com/gofiber/storage/postgres/v3 v3.6.0
 	github.com/gofiber/template/django/v3 v3.1.14
@@ -16,8 +18,8 @@ require (
 )
 
 require (
-	github.com/alecthomas/chroma/v2 v2.27.0 // indirect
 	github.com/andybalholm/brotli v1.1.0 // indirect
+	github.com/anmitsu/go-shlex v0.0.0-20200514113438-38f4b401e2be // indirect
 	github.com/dlclark/regexp2/v2 v2.2.1 // indirect
 	github.com/gofiber/template v1.8.3 // indirect
 	github.com/gofiber/utils v1.1.0 // indirect

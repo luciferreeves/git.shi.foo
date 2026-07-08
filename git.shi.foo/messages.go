@@ -7,4 +7,5 @@ const (
 	ServerShutdownFailed   = "Error during server shutdown: %v"
 	ServerShutdownComplete = "Shutdown complete."
 	HookInstallFailed      = "Failed to install git hooks: %v"
+	SSHStartFailed         = "Failed to start SSH server: %v"
 )

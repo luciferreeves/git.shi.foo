@@ -45,6 +45,22 @@ func ReceivePack(owner string, name string, token string, input io.Reader, outpu
 	return pipeService(command, input, output)
 }
 
+func UploadPackSession(owner string, name string, input io.Reader, output io.Writer) error {
+	command := exec.Command("git", "upload-pack", RepoPath(owner, name))
+	return pipeService(command, input, output)
+}
+
+func ReceivePackSession(owner string, name string, token string, input io.Reader, output io.Writer) error {
+	command := exec.Command("git",
+		"-c", "credential.helper=",
+		"-c", CredentialHelper,
+		"-c", "core.hooksPath="+HooksDir(),
+		"receive-pack", RepoPath(owner, name),
+	)
+	command.Env = append(os.Environ(), GitTokenEnv+"="+token)
+	return pipeService(command, input, output)
+}
+
 func pipeService(command *exec.Cmd, input io.Reader, output io.Writer) error {
 	command.Stdin = input
 	command.Stdout = output

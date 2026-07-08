@@ -8,6 +8,7 @@ import (
 	"syscall"
 
 	"git.shi.foo/config"
+	"git.shi.foo/git"
 	"git.shi.foo/jobs"
 	"git.shi.foo/middleware"
 	jobrepo "git.shi.foo/repositories/job"
@@ -37,6 +38,10 @@ func main() {
 
 	middleware.Initialize(application)
 	router.Initialize(application)
+
+	if hookError := git.InstallHooks(); hookError != nil {
+		logger.Errorf(LogPrefix, HookInstallFailed, hookError)
+	}
 
 	jobs.Register(jobrepo.KindImport, repos.RunImport)
 	jobs.Recover()

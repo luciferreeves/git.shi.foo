@@ -18,4 +18,13 @@ const (
 	PhaseCompressing = "compressing"
 	PhaseReceiving   = "receiving"
 	PhaseResolving   = "resolving"
+
+	ServiceUploadPack  = "git-upload-pack"
+	ServiceReceivePack = "git-receive-pack"
+	ServicePrefix      = "# service="
+	FlushPacket        = "0000"
+
+	HooksSubdir        = ".githooks"
+	PreReceiveHookName = "pre-receive"
+	HookPermission     = os.FileMode(0o755)
 )

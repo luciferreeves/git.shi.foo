@@ -2,7 +2,6 @@ package settings
 
 import (
 	"crypto/rand"
-	"crypto/sha256"
 	"encoding/hex"
 	"errors"
 
@@ -10,6 +9,7 @@ import (
 	"git.shi.foo/repositories/token"
 	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/shortcuts"
+	"git.shi.foo/utils/tokens"
 
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
@@ -64,8 +64,7 @@ func RevokeToken(userID uint, tokenID uint) *fiber.Error {
 }
 
 func HashToken(plaintext string) string {
-	sum := sha256.Sum256([]byte(plaintext))
-	return hex.EncodeToString(sum[:])
+	return tokens.Hash(plaintext)
 }
 
 func generateSecret() (string, error) {

@@ -11,6 +11,12 @@ func FindByProviderID(providerID string) (*models.User, error) {
 	return &found, result.Error
 }
 
+func FindByID(id uint) (*models.User, error) {
+	var found models.User
+	result := database.DB.First(&found, id)
+	return &found, result.Error
+}
+
 func Create(record *models.User) error {
 	return database.DB.Create(record).Error
 }

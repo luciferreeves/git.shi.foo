@@ -5,6 +5,7 @@ import (
 	"crypto/rand"
 	"encoding/pem"
 	"os"
+	"path/filepath"
 
 	"git.shi.foo/config"
 	"git.shi.foo/utils/logger"
@@ -42,6 +43,11 @@ func hostSigner() (gossh.Signer, error) {
 func persistHostKey(path string, privateKey ed25519.PrivateKey) {
 	block, marshalError := gossh.MarshalPrivateKey(privateKey, "")
 	if marshalError != nil {
+		logger.Infof(LogPrefix, HostKeyGenerated)
+		return
+	}
+
+	if mkdirError := os.MkdirAll(filepath.Dir(path), HostKeyDirMode); mkdirError != nil {
 		logger.Infof(LogPrefix, HostKeyGenerated)
 		return
 	}

@@ -1,0 +1,165 @@
+.repo-header {
+  padding: var(--sp-4) var(--sp-2) 0;
+}
+
+.repo-identity {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+}
+
+.repo-name {
+  color: #fff;
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  letter-spacing: var(--ls-1);
+}
+
+.repo-visibility {
+  padding: var(--sp-1) var(--sp-4);
+  border: var(--bw) solid var(--border2);
+  color: var(--dim);
+  font-size: var(--fs-tiny);
+  letter-spacing: var(--ls-1);
+}
+
+.repo-description {
+  margin-top: var(--sp-5);
+  color: var(--dim);
+}
+
+.repo-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-4);
+  margin-top: var(--sp-5);
+  color: var(--dim);
+  font-size: var(--fs-xs);
+}
+
+.repo-meta b {
+  color: var(--text);
+  font-weight: 400;
+}
+
+.repo-meta-separator {
+  color: var(--faint);
+}
+
+.repo-clone {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-4);
+  height: var(--field-h);
+  margin-top: var(--sp-6);
+  padding: 0 var(--sp-5);
+  background: var(--head);
+  border: var(--bw) solid var(--border2);
+}
+
+.repo-clone-label {
+  color: var(--dim);
+  font-size: var(--fs-tiny);
+  letter-spacing: var(--ls-1);
+}
+
+.repo-clone-url {
+  color: var(--cyanlink);
+  font-size: var(--fs-xs);
+}
+
+.repo-tabs {
+  display: flex;
+  gap: var(--sp-2);
+  margin: var(--sp-8) 0 var(--sp-6);
+  border-bottom: var(--bw) solid var(--border2);
+}
+
+.repo-tab {
+  padding: var(--sp-4) var(--sp-6);
+  border-bottom: var(--sp-1) solid transparent;
+  color: var(--dim);
+  font-size: var(--fs-xs);
+}
+
+.repo-tab:hover {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.repo-tab.is-active {
+  color: #fff;
+  border-bottom-color: var(--cyan);
+}
+
+.repo-tab.is-disabled {
+  color: var(--faint);
+  cursor: default;
+}
+
+.repo-tab.is-disabled:hover {
+  color: var(--faint);
+}
+
+.repo-branchbar {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-6);
+}
+
+.repo-branch {
+  display: inline-flex;
+  align-items: center;
+  height: var(--field-h);
+  padding: 0 var(--sp-5);
+  background: var(--head);
+  border: var(--bw) solid var(--border2);
+  color: var(--text);
+  font-size: var(--fs-xs);
+}
+
+.repo-latest-commit {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  color: var(--dim);
+  font-size: var(--fs-xs);
+}
+
+.repo-commit-sha {
+  padding: var(--sp-1) var(--sp-4);
+  border: var(--bw) solid var(--border2);
+  color: var(--purplebr);
+  font-size: var(--fs-tiny);
+}
+
+.repo-commit-author {
+  color: var(--green);
+}
+
+.file-table {
+  border: var(--bw) solid var(--border);
+}
+
+.file-name {
+  color: var(--cyan);
+}
+
+.file-name.is-dir {
+  color: var(--cyan);
+}
+
+.file-size {
+  text-align: right;
+  color: var(--faint);
+}
+
+.repo-empty {
+  padding: var(--sp-8);
+  background: var(--panel);
+  border: var(--bw) solid var(--border);
+  color: var(--dim);
+  text-align: center;
+}

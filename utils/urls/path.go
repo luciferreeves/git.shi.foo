@@ -21,6 +21,14 @@ const (
 )
 
 func Path(method HTTPMethod, path string, handler fiber.Handler, name string) {
+	register(method, path, handler, name, false)
+}
+
+func Fallback(method HTTPMethod, path string, handler fiber.Handler, name string) {
+	register(method, path, handler, name, true)
+}
+
+func register(method HTTPMethod, path string, handler fiber.Handler, name string, fallback bool) {
 	registry.Mutex.Lock()
 	defer registry.Mutex.Unlock()
 
@@ -35,6 +43,7 @@ func Path(method HTTPMethod, path string, handler fiber.Handler, name string) {
 		Namespace: namespace,
 		Name:      name,
 		FullPath:  fullPath,
+		Fallback:  fallback,
 	})
 }
 

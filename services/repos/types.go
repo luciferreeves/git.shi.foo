@@ -29,3 +29,32 @@ type IndexContext struct {
 	Title string
 	Repos []RepoView
 }
+
+type EntryView struct {
+	Type      string
+	Name      string
+	Size      int64
+	SizeLabel string
+	IsDir     bool
+}
+
+type CommitView struct {
+	Short   string
+	Message string
+	Author  string
+	When    time.Time
+}
+
+type ShowContext struct {
+	Title         string
+	Owner         string
+	Name          string
+	Private       bool
+	Description   string
+	DefaultBranch string
+	Status        string
+	CloneURL      string
+	Ready         bool
+	LatestCommit  *CommitView
+	Entries       []EntryView
+}

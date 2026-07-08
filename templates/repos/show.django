@@ -1,0 +1,59 @@
+{% extends "layouts/base.django" %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block content %}
+<div class="repo-header">
+  <div class="repo-identity">
+    <span class="repo-name">{{ Owner }}/{{ Name }}</span>
+    <span class="repo-visibility">{% if Private %}private{% else %}public{% endif %}</span>
+  </div>
+  {% if Description %}<p class="repo-description">{{ Description }}</p>{% endif %}
+  <div class="repo-meta">
+    <span>default branch <b class="text-green">{{ DefaultBranch }}</b></span>
+    <span class="repo-meta-separator">·</span>
+    <span>status <b>{{ Status }}</b></span>
+  </div>
+  <div class="repo-clone">
+    <span class="repo-clone-label">HTTPS</span>
+    <span class="repo-clone-url">{{ CloneURL }}</span>
+  </div>
+</div>
+
+<nav class="repo-tabs">
+  <a class="repo-tab is-active">files</a>
+  <a class="repo-tab is-disabled">commits</a>
+  <a class="repo-tab is-disabled">branches</a>
+  <a class="repo-tab is-disabled">tags</a>
+  <a class="repo-tab is-disabled">contributors</a>
+  <a class="repo-tab is-disabled">settings</a>
+</nav>
+
+{% if not Ready %}
+<div class="repo-empty">This repository is {{ Status }}. Check back once the mirror finishes.</div>
+{% elif not Entries %}
+<div class="repo-empty">This repository is empty.</div>
+{% else %}
+{% if LatestCommit %}
+<div class="repo-branchbar">
+  <span class="repo-branch">{{ DefaultBranch }}</span>
+  <span class="repo-latest-commit">
+    <span class="repo-commit-sha">{{ LatestCommit.Short }}</span>
+    <span>{{ LatestCommit.Message }}</span>
+    <span class="repo-meta-separator">·</span>
+    <span class="repo-commit-author">{{ LatestCommit.Author }}</span>
+  </span>
+</div>
+{% endif %}
+
+<table class="file-table">
+<thead><tr><th>name</th><th class="file-size">size</th></tr></thead>
+<tbody>
+{% for entry in Entries %}
+<tr>
+<td class="file-name{% if entry.IsDir %} is-dir{% endif %}">{{ entry.Name }}{% if entry.IsDir %}/{% endif %}</td>
+<td class="file-size">{{ entry.SizeLabel }}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% endif %}
+{% endblock %}

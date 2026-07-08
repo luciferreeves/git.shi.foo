@@ -15,6 +15,7 @@ type RegisteredRoute struct {
 	Namespace string
 	Name      string
 	FullPath  string
+	Fallback  bool
 }
 
 type RouteRegistry struct {

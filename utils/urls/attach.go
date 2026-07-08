@@ -7,6 +7,14 @@ func Attach(application *fiber.App) {
 	defer registry.Mutex.Unlock()
 
 	for _, route := range registry.Routes.All() {
-		bindPath(application, route)
+		if !route.Fallback {
+			bindPath(application, route)
+		}
+	}
+
+	for _, route := range registry.Routes.All() {
+		if route.Fallback {
+			bindPath(application, route)
+		}
 	}
 }

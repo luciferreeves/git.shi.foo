@@ -2,20 +2,21 @@
 {% block content %}
 <h1>Repositories</h1>
 <p><a href="{% url "repos.import" %}">Import from GitHub</a></p>
-
+{% if Repos %}
 <table>
 <thead><tr><th>Repository</th><th>Visibility</th><th>Status</th><th>Updated</th></tr></thead>
 <tbody>
 {% for repository in Repos %}
 <tr>
-<td>{{ repository.Owner }}/{{ repository.Name }}</td>
-<td>{% if repository.Private %}private{% else %}public{% endif %}</td>
-<td>{{ repository.Status }}</td>
-<td>{{ repository.UpdatedAt }}</td>
+<td class="cell-strong"><a href="{% url "repo.show" owner=repository.Owner repo=repository.Name %}">{{ repository.Owner }}/{{ repository.Name }}</a></td>
+<td class="text-dim">{% if repository.Private %}private{% else %}public{% endif %}</td>
+<td><span class="status-pill is-{{ repository.Status }}">{{ repository.Status }}</span></td>
+<td class="text-dim">{{ repository.UpdatedAt }}</td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
-
-<p><a href="{% url "home" %}">Back to home</a></p>
+{% else %}
+<p>No repositories yet. <a href="{% url "repos.import" %}">Import one from GitHub</a>.</p>
+{% endif %}
 {% endblock %}

@@ -13,4 +13,5 @@ const (
 	ListFailed       = "Could not load repositories."
 	ImportFailed     = "Could not import the repository."
 	AlreadyImported  = "That repository is already imported."
+	RepoNotFound     = "Repository not found."
 )

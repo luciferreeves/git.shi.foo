@@ -41,7 +41,7 @@ func main() {
 	router.Initialize(application)
 
 	if hookError := git.InstallHooks(); hookError != nil {
-		logger.Errorf(LogPrefix, HookInstallFailed, hookError)
+		logger.Fatalf(LogPrefix, HookInstallFailed, hookError)
 	}
 
 	jobs.Register(jobrepo.KindImport, repos.RunImport)

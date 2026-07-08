@@ -11,16 +11,23 @@ type RepoOwner struct {
 	Login string `json:"login"`
 }
 
+type RepoPermissions struct {
+	Admin bool `json:"admin"`
+	Push  bool `json:"push"`
+	Pull  bool `json:"pull"`
+}
+
 type Repository struct {
-	ID            int64     `json:"id"`
-	Name          string    `json:"name"`
-	FullName      string    `json:"full_name"`
-	Private       bool      `json:"private"`
-	Description   string    `json:"description"`
-	DefaultBranch string    `json:"default_branch"`
-	Fork          bool      `json:"fork"`
-	Archived      bool      `json:"archived"`
-	Owner         RepoOwner `json:"owner"`
+	ID            int64           `json:"id"`
+	Name          string          `json:"name"`
+	FullName      string          `json:"full_name"`
+	Private       bool            `json:"private"`
+	Description   string          `json:"description"`
+	DefaultBranch string          `json:"default_branch"`
+	Fork          bool            `json:"fork"`
+	Archived      bool            `json:"archived"`
+	Owner         RepoOwner       `json:"owner"`
+	Permissions   RepoPermissions `json:"permissions"`
 }
 
 func FetchUserRepos(requestContext context.Context, accessToken string) ([]Repository, error) {

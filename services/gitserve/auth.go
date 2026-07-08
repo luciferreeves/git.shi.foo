@@ -8,7 +8,10 @@ import (
 	"git.shi.foo/repositories/repo"
 	patrepo "git.shi.foo/repositories/token"
 	"git.shi.foo/repositories/user"
+	"git.shi.foo/services/credentials"
 	"git.shi.foo/services/repos"
+	"git.shi.foo/utils/github"
+	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/shortcuts"
 	"git.shi.foo/utils/tokens"
 
@@ -42,7 +45,7 @@ func Authorize(requestContext context.Context, currentUser *account.Response, ow
 		if !currentUser.Enabled {
 			return shortcuts.ServiceError(fiber.StatusForbidden, NotAllowed)
 		}
-		return nil
+		return authorizePush(requestContext, currentUser, owner, name)
 	}
 
 	record, findError := repo.FindByOwnerName(owner, name)
@@ -57,4 +60,23 @@ func Authorize(requestContext context.Context, currentUser *account.Response, ow
 	}
 
 	return repos.Viewable(requestContext, currentUser, owner, name)
+}
+
+func authorizePush(requestContext context.Context, currentUser *account.Response, owner string, name string) *fiber.Error {
+	accessToken, tokenError := credentials.AccessTokenForUser(requestContext, currentUser.ID)
+	if tokenError != nil {
+		logger.Errorf(LogPrefix, TokenLog, tokenError)
+		return shortcuts.ServiceError(fiber.StatusBadGateway, ServiceUnavailable)
+	}
+
+	metadata, fetchError := github.FetchRepo(requestContext, accessToken, owner, name)
+	if fetchError != nil {
+		return shortcuts.ServiceError(fiber.StatusNotFound, RepoNotFound)
+	}
+
+	if !metadata.Permissions.Push {
+		return shortcuts.ServiceError(fiber.StatusForbidden, NotAllowed)
+	}
+
+	return nil
 }

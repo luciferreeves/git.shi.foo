@@ -4,6 +4,7 @@ const (
 	LogPrefix = "JobRepository"
 
 	KindImport = "import"
+	KindFetch  = "fetch"
 
 	StatusPending   = "pending"
 	StatusRunning   = "running"

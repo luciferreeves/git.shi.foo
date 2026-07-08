@@ -14,6 +14,7 @@ import (
 	jobrepo "git.shi.foo/repositories/job"
 	"git.shi.foo/router"
 	"git.shi.foo/services/repos"
+	servicesync "git.shi.foo/services/sync"
 	"git.shi.foo/ssh"
 	"git.shi.foo/tags"
 	"git.shi.foo/utils/logger"
@@ -45,6 +46,7 @@ func main() {
 	}
 
 	jobs.Register(jobrepo.KindImport, repos.RunImport)
+	jobs.Register(jobrepo.KindFetch, servicesync.RunFetch)
 	jobs.Recover()
 	repos.ReconcileImports()
 

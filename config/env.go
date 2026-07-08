@@ -29,6 +29,7 @@ type github struct {
 	AppID         string `env:"GITHUB_APP_ID" default:""`
 	AppPrivateKey string `env:"GITHUB_APP_PRIVATE_KEY" default:""`
 	EncryptionKey string `env:"GITHUB_ENCRYPTION_KEY" default:""`
+	WebhookSecret string `env:"GITHUB_WEBHOOK_SECRET" default:""`
 }
 
 type git struct {

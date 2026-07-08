@@ -3,6 +3,7 @@ package models
 import (
 	"time"
 
+	"gorm.io/datatypes"
 	"gorm.io/gorm"
 )
 
@@ -16,5 +17,6 @@ type Job struct {
 	Attempts    int `gorm:"not null;default:0"`
 	MaxAttempts int `gorm:"not null;default:3"`
 	RunAfter    time.Time
-	Error       string `gorm:"type:text"`
+	Error       string         `gorm:"type:text"`
+	Payload     datatypes.JSON `gorm:"type:jsonb"`
 }

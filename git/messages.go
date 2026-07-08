@@ -7,6 +7,7 @@ const (
 	CommitParseFailed = "could not parse commit output"
 	UnknownService    = "unknown git service: %s"
 	ServiceFailed     = "git service failed: %v: %s"
+	FetchFailed       = "git fetch failed: %v: %s"
 	HooksDirFailed    = "failed to create hooks directory: %v"
 	HookWriteFailed   = "failed to write pre-receive hook: %v"
 )

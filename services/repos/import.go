@@ -2,10 +2,12 @@ package repos
 
 import (
 	"context"
+	"time"
 
 	"git.shi.foo/account"
-	"git.shi.foo/git"
+	"git.shi.foo/jobs"
 	"git.shi.foo/models"
+	jobrepo "git.shi.foo/repositories/job"
 	"git.shi.foo/repositories/repo"
 	"git.shi.foo/services/credentials"
 	"git.shi.foo/utils/github"
@@ -51,36 +53,26 @@ func ImportRepo(currentUser *account.Response, owner string, name string) *fiber
 		return shortcuts.ServiceError(fiber.StatusInternalServerError, ImportFailed)
 	}
 
-	go performMirror(record.ID, currentUser.ID, record.Owner, record.Name)
+	if enqueueError := enqueueImport(record.ID); enqueueError != nil {
+		logger.Errorf(LogPrefix, EnqueueLog, enqueueError)
+		return shortcuts.ServiceError(fiber.StatusInternalServerError, ImportFailed)
+	}
 
 	return nil
 }
 
-func performMirror(repoID uint, userID uint, owner string, name string) {
-	backgroundContext := context.Background()
-
-	accessToken, tokenError := credentials.AccessTokenForUser(backgroundContext, userID)
-	if tokenError != nil {
-		logger.Errorf(LogPrefix, TokenLog, tokenError)
-		setStatus(repoID, repo.StatusFailed)
-		return
+func enqueueImport(repoID uint) error {
+	jobRecord := &models.Job{
+		Kind:        jobrepo.KindImport,
+		RepoID:      &repoID,
+		Status:      jobrepo.StatusPending,
+		MaxAttempts: ImportMaxAttempts,
+		RunAfter:    time.Now(),
+	}
+	if createError := jobrepo.Create(jobRecord); createError != nil {
+		return createError
 	}
 
-	if mirrorError := git.Mirror(owner, name, accessToken); mirrorError != nil {
-		logger.Errorf(LogPrefix, MirrorLog, mirrorError)
-		setStatus(repoID, repo.StatusFailed)
-		return
-	}
-
-	setStatus(repoID, repo.StatusActive)
-}
-
-func setStatus(repoID uint, status string) {
-	record, findError := repo.FindByID(repoID)
-	if findError != nil {
-		return
-	}
-
-	record.Status = status
-	_ = repo.Update(record)
+	jobs.Signal()
+	return nil
 }

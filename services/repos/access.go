@@ -51,6 +51,10 @@ func blobURL(owner string, name string, path string) string {
 	return "/" + owner + "/" + name + "/blob/" + path
 }
 
+func importEventsURL(owner string, name string) string {
+	return "/" + owner + "/" + name + ImportEventsURLPath
+}
+
 func childPath(parent string, name string) string {
 	if parent == "" {
 		return name
@@ -79,7 +83,7 @@ func buildCrumbs(owner string, name string, path string) []Crumb {
 	}
 
 	accumulated := ""
-	for _, segment := range strings.Split(path, "/") {
+	for segment := range strings.SplitSeq(path, "/") {
 		accumulated = childPath(accumulated, segment)
 		crumbs = append(crumbs, Crumb{Name: segment, URL: treeURL(owner, name, accumulated)})
 	}

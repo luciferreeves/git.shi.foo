@@ -12,6 +12,10 @@ const (
 
 	PlainFormat = "<pre class=\"blob-code-plain\">%s</pre>"
 
+	ImportMaxAttempts   = 3
+	ImportEventsURLPath = "/import/events"
+	DonePercent         = 100
+
 	bytesPerKB       = 1 << 10
 	bytesPerMB       = 1 << 20
 	binarySniffLimit = 8000

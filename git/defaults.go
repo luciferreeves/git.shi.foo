@@ -13,4 +13,9 @@ const (
 	GitTokenEnv         = "GIT_ASKPASS_TOKEN"
 	CredentialHelper    = "credential.helper=!f() { echo username=x-access-token; echo password=$GIT_ASKPASS_TOKEN; }; f"
 	RedactedToken       = "[redacted]"
+
+	PhaseCounting    = "counting"
+	PhaseCompressing = "compressing"
+	PhaseReceiving   = "receiving"
+	PhaseResolving   = "resolving"
 )

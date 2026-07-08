@@ -14,6 +14,7 @@ func migrate() {
 		&models.PersonalAccessToken{},
 		&models.PublicKey{},
 		&models.Repo{},
+		&models.Job{},
 	)
 
 	if migrationError != nil {

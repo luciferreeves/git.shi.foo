@@ -39,6 +39,8 @@
   --footer-h: 34px;
   --row-h: 32px;
   --field-h: 30px;
+  --progress-h: 8px;
+  --progress-transition: 240ms;
 
   --avatar: 20px;
   --avatar-sm: 17px;

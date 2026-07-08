@@ -65,6 +65,15 @@ type ShowContext struct {
 	Crumbs        []Crumb
 	LatestCommit  *CommitView
 	Entries       []EntryView
+	Importing     bool
+	ImportPhase   string
+	ImportPercent int
+	EventsURL     string
+}
+
+type ImportStreamContext struct {
+	Topic  string
+	RepoID uint
 }
 
 type BlobContext struct {

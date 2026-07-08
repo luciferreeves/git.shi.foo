@@ -31,6 +31,12 @@ func ListActive() ([]models.Repo, error) {
 	return records, result.Error
 }
 
+func ListByStatus(status string) ([]models.Repo, error) {
+	var records []models.Repo
+	result := database.DB.Where("status = ?", status).Order("updated_at desc").Find(&records)
+	return records, result.Error
+}
+
 func ListAll() ([]models.Repo, error) {
 	var records []models.Repo
 	result := database.DB.Order("updated_at desc").Find(&records)

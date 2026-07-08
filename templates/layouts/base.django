@@ -26,5 +26,6 @@
 </div>
 <script src="{% static "js/clock.js" %}" defer></script>
 <script src="{% static "js/menu.js" %}" defer></script>
+{% block scripts %}{% endblock %}
 </body>
 </html>

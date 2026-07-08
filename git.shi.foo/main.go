@@ -1,14 +1,18 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/signal"
 	"syscall"
 
 	"git.shi.foo/config"
+	"git.shi.foo/jobs"
 	"git.shi.foo/middleware"
+	jobrepo "git.shi.foo/repositories/job"
 	"git.shi.foo/router"
+	"git.shi.foo/services/repos"
 	"git.shi.foo/tags"
 	"git.shi.foo/utils/logger"
 
@@ -34,6 +38,13 @@ func main() {
 	middleware.Initialize(application)
 	router.Initialize(application)
 
+	jobs.Register(jobrepo.KindImport, repos.RunImport)
+	jobs.Recover()
+	repos.ReconcileImports()
+
+	workerContext, stopWorkers := context.WithCancel(context.Background())
+	jobs.Start(workerContext)
+
 	shutdownSignal := make(chan os.Signal, 1)
 	signal.Notify(shutdownSignal, syscall.SIGINT, syscall.SIGTERM)
 
@@ -48,6 +59,7 @@ func main() {
 
 	<-shutdownSignal
 	logger.Infof(LogPrefix, ServerShuttingDown)
+	stopWorkers()
 
 	if shutdownError := application.Shutdown(); shutdownError != nil {
 		logger.Errorf(LogPrefix, ServerShutdownFailed, shutdownError)

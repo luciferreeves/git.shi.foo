@@ -27,8 +27,26 @@
   <a class="repo-tab is-disabled">settings</a>
 </nav>
 
-{% if not Ready %}
-<div class="repo-empty">This repository is {{ Status }}. Check back once the mirror finishes.</div>
+{% if Importing %}
+<div class="import-progress" data-events="{{ EventsURL }}">
+  <div class="import-progress-head">
+    <span class="import-progress-title">Importing {{ Owner }}/{{ Name }}</span>
+    <span class="import-progress-phase" data-role="phase">{{ ImportPhase }}</span>
+  </div>
+  <div class="import-progress-track">
+    <div class="import-progress-bar" data-role="bar" style="width: {{ ImportPercent }}%;"></div>
+  </div>
+  <div class="import-progress-meta">
+    <span data-role="percent">{{ ImportPercent }}</span>% mirrored
+  </div>
+</div>
+{% elif not Ready %}
+<div class="repo-empty repo-failed">
+  <p>This repository failed to import.</p>
+  <form method="post" action="/{{ Owner }}/{{ Name }}/import/retry">
+    <button type="submit" class="retry-button">Retry import</button>
+  </form>
+</div>
 {% elif not Entries %}
 <div class="repo-empty">This repository is empty.</div>
 {% else %}
@@ -66,3 +84,4 @@
 </table>
 {% endif %}
 {% endblock %}
+{% block scripts %}<script src="{% static "js/progress.js" %}" defer></script>{% endblock %}

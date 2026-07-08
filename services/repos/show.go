@@ -8,6 +8,7 @@ import (
 	"git.shi.foo/account"
 	"git.shi.foo/config"
 	"git.shi.foo/git"
+	jobrepo "git.shi.foo/repositories/job"
 	"git.shi.foo/repositories/repo"
 	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/shortcuts"
@@ -42,6 +43,15 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		Ready:         record.Status == repo.StatusActive,
 		Path:          path,
 		Crumbs:        buildCrumbs(record.Owner, record.Name, path),
+	}
+
+	if record.Status == repo.StatusImporting {
+		showContext.Importing = true
+		showContext.EventsURL = importEventsURL(record.Owner, record.Name)
+		if latest, jobError := jobrepo.FindLatestForRepo(record.ID, jobrepo.KindImport); jobError == nil {
+			showContext.ImportPhase = latest.Phase
+			showContext.ImportPercent = latest.Percent
+		}
 	}
 
 	if !showContext.Ready {

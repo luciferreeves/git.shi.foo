@@ -18,5 +18,5 @@ func Import(context *fiber.Ctx) error {
 		return importError
 	}
 
-	return shortcuts.Redirect(context, "repos.index")
+	return shortcuts.RedirectToPath(context, "/"+request.Owner+"/"+request.Name)
 }

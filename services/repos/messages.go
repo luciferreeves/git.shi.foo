@@ -1,13 +1,17 @@
 package repos
 
 const (
-	TokenLog      = "Failed to get access token: %v"
-	ReposFetchLog = "Failed to fetch GitHub repos: %v"
-	ListLog       = "Failed to list repos: %v"
-	MetadataLog   = "Failed to fetch repo metadata: %v"
-	CreateLog     = "Failed to create repo row: %v"
-	MirrorLog     = "Failed to mirror repo: %v"
-	HighlightLog  = "Failed to highlight file: %v"
+	TokenLog        = "Failed to get access token: %v"
+	ReposFetchLog   = "Failed to fetch GitHub repos: %v"
+	ListLog         = "Failed to list repos: %v"
+	MetadataLog     = "Failed to fetch repo metadata: %v"
+	CreateLog       = "Failed to create repo row: %v"
+	HighlightLog    = "Failed to highlight file: %v"
+	EnqueueLog      = "Failed to enqueue import job: %v"
+	ReconcileLog    = "Failed to reconcile imports: %v"
+	StatusUpdateLog = "Failed to update repo status: %v"
+
+	ImportMissingRepo = "import job has no repo."
 
 	AuthRequired     = "Sign in required."
 	ReposFetchFailed = "Could not fetch your GitHub repositories."

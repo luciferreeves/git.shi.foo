@@ -20,4 +20,5 @@ const (
 	AlreadyImported  = "That repository is already imported."
 	RepoNotFound     = "Repository not found."
 	FileNotFound     = "File not found."
+	RetryForbidden   = "You cannot retry this import."
 )

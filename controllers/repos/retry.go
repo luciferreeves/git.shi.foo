@@ -12,7 +12,7 @@ func Retry(context *fiber.Ctx) error {
 	owner := context.Params("owner")
 	name := context.Params("repo")
 
-	if retryError := servicerepos.RetryImport(meta.User(context), owner, name); retryError != nil {
+	if retryError := servicerepos.RetryImport(context.UserContext(), meta.User(context), owner, name); retryError != nil {
 		return retryError
 	}
 

@@ -18,11 +18,15 @@ while read old new ref; do
 	fi
 done
 [ -z "$refspecs" ] && exit 0
-exec git push --atomic origin $refspecs
+exec git -c remote.origin.mirror=false push --atomic origin $refspecs
 `
 
 func HooksDir() string {
-	return filepath.Join(config.Git.ReposRoot, HooksSubdir)
+	directory := filepath.Join(config.Git.ReposRoot, HooksSubdir)
+	if absolute, absError := filepath.Abs(directory); absError == nil {
+		return absolute
+	}
+	return directory
 }
 
 func InstallHooks() error {

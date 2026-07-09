@@ -3,6 +3,12 @@
 {% block content %}
 {% include "partials/repohead.django" %}
 
+{% if RefBranches %}
+<div class="repo-branchbar">
+  {% include "partials/refselect.django" %}
+</div>
+{% endif %}
+
 {% if not Commits %}
 <div class="repo-empty">No commits to show.</div>
 {% else %}

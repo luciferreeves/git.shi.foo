@@ -49,7 +49,7 @@ func Blob(context *fiber.Ctx) error {
 }
 
 func Commits(context *fiber.Ctx) error {
-	data, dataError := repos.GetCommitsData(context.UserContext(), meta.User(context), context.Params("owner"), context.Params("repo"), context.QueryInt("page", 1))
+	data, dataError := repos.GetCommitsData(context.UserContext(), meta.User(context), context.Params("owner"), context.Params("repo"), context.Params("*"), context.QueryInt("page", 1))
 	if dataError != nil {
 		return dataError
 	}

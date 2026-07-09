@@ -15,7 +15,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetCommitsData(requestContext context.Context, currentUser *account.Response, owner string, name string, page int) (*CommitsContext, *fiber.Error) {
+func GetCommitsData(requestContext context.Context, currentUser *account.Response, owner string, name string, remainder string, page int) (*CommitsContext, *fiber.Error) {
 	record, findError := repo.FindByOwnerName(owner, name)
 	if findError != nil {
 		if errors.Is(findError, gorm.ErrRecordNotFound) {
@@ -33,6 +33,8 @@ func GetCommitsData(requestContext context.Context, currentUser *account.Respons
 		page = 1
 	}
 
+	ref, _ := resolveRef(record.Owner, record.Name, remainder, record.DefaultBranch)
+
 	commitsContext := &CommitsContext{
 		Title:         record.Owner + "/" + record.Name,
 		Owner:         record.Owner,
@@ -44,6 +46,7 @@ func GetCommitsData(requestContext context.Context, currentUser *account.Respons
 		CloneURL:      cloneURL(record.Owner, record.Name),
 		SSHCloneURL:   sshCloneURL(record.Owner, record.Name),
 		ActiveTab:     TabCommits,
+		Ref:           ref,
 		Page:          page,
 	}
 
@@ -51,8 +54,12 @@ func GetCommitsData(requestContext context.Context, currentUser *account.Respons
 		return commitsContext, nil
 	}
 
+	commitsContext.RefBranches, commitsContext.RefTags = buildRefOptions(record.Owner, record.Name, ref, func(option string) string {
+		return commitsURL(record.Owner, record.Name, option, 1)
+	})
+
 	skip := (page - 1) * CommitsPageSize
-	commits, logError := git.Log(record.Owner, record.Name, git.HeadRef, CommitsPageSize+1, skip)
+	commits, logError := git.Log(record.Owner, record.Name, ref, CommitsPageSize+1, skip)
 	if logError != nil {
 		return commitsContext, nil
 	}
@@ -73,17 +80,17 @@ func GetCommitsData(requestContext context.Context, currentUser *account.Respons
 	}
 
 	if commitsContext.HasPrev {
-		commitsContext.PrevURL = commitsURL(record.Owner, record.Name, page-1)
+		commitsContext.PrevURL = commitsURL(record.Owner, record.Name, ref, page-1)
 	}
 	if commitsContext.HasNext {
-		commitsContext.NextURL = commitsURL(record.Owner, record.Name, page+1)
+		commitsContext.NextURL = commitsURL(record.Owner, record.Name, ref, page+1)
 	}
 
 	return commitsContext, nil
 }
 
-func commitsURL(owner string, name string, page int) string {
-	base := "/" + owner + "/" + name + "/commits"
+func commitsURL(owner string, name string, ref string, page int) string {
+	base := "/" + owner + "/" + name + "/commits/" + ref
 	if page <= 1 {
 		return base
 	}

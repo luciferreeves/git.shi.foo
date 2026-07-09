@@ -13,6 +13,7 @@ func init() {
 	urls.Fallback(urls.Get, "/:owner/:repo/tree/*", page.Show, "repo.tree")
 	urls.Fallback(urls.Get, "/:owner/:repo/blob/*", page.Blob, "repo.blob")
 	urls.Fallback(urls.Get, "/:owner/:repo/commits", page.Commits, "repo.commits")
+	urls.Fallback(urls.Get, "/:owner/:repo/commits/*", page.Commits, "repo.commits.ref")
 	urls.Fallback(urls.Get, "/:owner/:repo/branches", page.Branches, "repo.branches")
 	urls.Fallback(urls.Get, "/:owner/:repo/tags", page.Tags, "repo.tags")
 	urls.Fallback(urls.Get, "/:owner/:repo/contributors", page.Contributors, "repo.contributors")

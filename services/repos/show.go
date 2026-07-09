@@ -64,7 +64,9 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		return showContext, nil
 	}
 
-	showContext.RefBranches, showContext.RefTags = buildRefOptions(record.Owner, record.Name, ref, path, false)
+	showContext.RefBranches, showContext.RefTags = buildRefOptions(record.Owner, record.Name, ref, func(option string) string {
+		return treeURL(record.Owner, record.Name, option, path)
+	})
 
 	if entries, treeError := git.Tree(record.Owner, record.Name, ref, path); treeError == nil {
 		showContext.Entries = toEntryViews(entries, record.Owner, record.Name, ref, path)

@@ -135,6 +135,9 @@ type CommitsContext struct {
 	CloneURL      string
 	SSHCloneURL   string
 	ActiveTab     string
+	Ref           string
+	RefBranches   []RefOption
+	RefTags       []RefOption
 	Commits       []CommitView
 	Page          int
 	HasPrev       bool

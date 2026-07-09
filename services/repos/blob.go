@@ -37,7 +37,9 @@ func GetBlobData(requestContext context.Context, currentUser *account.Response, 
 	}
 
 	filename := fileName(path)
-	branchOptions, tagOptions := buildRefOptions(record.Owner, record.Name, ref, path, true)
+	branchOptions, tagOptions := buildRefOptions(record.Owner, record.Name, ref, func(option string) string {
+		return blobURL(record.Owner, record.Name, option, path)
+	})
 
 	blobContext := &BlobContext{
 		Title:         record.Owner + "/" + record.Name,

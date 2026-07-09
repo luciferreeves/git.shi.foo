@@ -1,0 +1,18 @@
+{% extends "layouts/base.django" %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block content %}
+{% include "partials/repohead.django" %}
+
+{% if not Contributors %}
+<div class="repo-empty">No contributors to show.</div>
+{% else %}
+<div class="contributor-list">
+{% for person in Contributors %}
+<div class="contributor-row">
+  <span class="contributor-name">{{ person.Name }}</span>
+  <span class="contributor-count">{{ person.Count }} commits</span>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

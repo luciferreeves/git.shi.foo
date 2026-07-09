@@ -255,6 +255,80 @@
   text-decoration: none;
 }
 
+.ref-list,
+.contributor-list {
+  border: var(--bw) solid var(--border);
+  background: var(--panel);
+}
+
+.ref-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding: var(--sp-5) var(--sp-7);
+  border-bottom: var(--bw) solid var(--border);
+}
+
+.ref-row:last-child,
+.contributor-row:last-child {
+  border-bottom: 0;
+}
+
+.ref-row:hover,
+.contributor-row:hover {
+  background: var(--head);
+}
+
+.ref-name {
+  color: var(--cyan);
+  min-width: var(--ref-name-w);
+}
+
+.ref-default {
+  padding: 0 var(--sp-3);
+  border: var(--bw) solid var(--border2);
+  color: var(--dim);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-1);
+}
+
+.ref-commit {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--dim);
+}
+
+.ref-meta {
+  color: var(--faint);
+  font-size: var(--fs-tiny);
+  white-space: nowrap;
+}
+
+.ref-sha {
+  color: var(--purplebr);
+}
+
+.contributor-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  padding: var(--sp-5) var(--sp-7);
+  border-bottom: var(--bw) solid var(--border);
+}
+
+.contributor-name {
+  color: var(--green);
+}
+
+.contributor-count {
+  color: var(--dim);
+  font-size: var(--fs-tiny);
+}
+
 .repo-breadcrumbs {
   display: flex;
   flex-wrap: wrap;

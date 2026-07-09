@@ -1,0 +1,19 @@
+{% extends "layouts/base.django" %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block content %}
+{% include "partials/repohead.django" %}
+
+{% if not Tags %}
+<div class="repo-empty">No tags to show.</div>
+{% else %}
+<div class="ref-list">
+{% for tag in Tags %}
+<div class="ref-row">
+  <span class="ref-name">{{ tag.Name }}</span>
+  <span class="ref-commit">{{ tag.Message }}</span>
+  <span class="ref-meta"><span class="ref-sha">{{ tag.Short }}</span> {{ tag.When|timeago }}</span>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

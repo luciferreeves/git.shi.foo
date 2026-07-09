@@ -1,0 +1,19 @@
+{% extends "layouts/base.django" %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block content %}
+{% include "partials/repohead.django" %}
+
+{% if not Branches %}
+<div class="repo-empty">No branches to show.</div>
+{% else %}
+<div class="ref-list">
+{% for branch in Branches %}
+<div class="ref-row">
+  <span class="ref-name">{{ branch.Name }}{% if branch.Name == DefaultBranch %} <span class="ref-default">default</span>{% endif %}</span>
+  <span class="ref-commit">{{ branch.Message }}</span>
+  <span class="ref-meta"><span class="ref-sha">{{ branch.Short }}</span> {{ branch.When|timeago }}</span>
+</div>
+{% endfor %}
+</div>
+{% endif %}
+{% endblock %}

@@ -54,6 +54,59 @@ type CommitView struct {
 	When    time.Time
 }
 
+type RefView struct {
+	Name    string
+	Short   string
+	Message string
+	Author  string
+	When    time.Time
+}
+
+type ContributorView struct {
+	Name  string
+	Email string
+	Count int
+}
+
+type BranchesContext struct {
+	Title         string
+	Owner         string
+	Name          string
+	Private       bool
+	Description   string
+	DefaultBranch string
+	Status        string
+	CloneURL      string
+	ActiveTab     string
+	Branches      []RefView
+}
+
+type TagsContext struct {
+	Title         string
+	Owner         string
+	Name          string
+	Private       bool
+	Description   string
+	DefaultBranch string
+	Status        string
+	CloneURL      string
+	ActiveTab     string
+	Tags          []RefView
+}
+
+type ContributorsContext struct {
+	Title         string
+	Owner         string
+	Name          string
+	Private       bool
+	Description   string
+	DefaultBranch string
+	Status        string
+	CloneURL      string
+	ActiveTab     string
+	Contributors  []ContributorView
+}
+
 type CommitsContext struct {
 	Title         string
 	Owner         string

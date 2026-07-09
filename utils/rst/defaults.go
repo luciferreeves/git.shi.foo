@@ -1,5 +1,8 @@
 package rst
 
 const (
-	LogPrefix = "RST"
+	LogPrefix    = "RST"
+	PandocBinary = "pandoc"
 )
+
+var PandocArgs = []string{"--from", "rst", "--to", "html", "--no-highlight"}

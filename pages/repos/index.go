@@ -47,3 +47,13 @@ func Blob(context *fiber.Ctx) error {
 	meta.SetPageTitle(context, data.Title)
 	return shortcuts.Render(context, "repos/blob", data)
 }
+
+func Commits(context *fiber.Ctx) error {
+	data, dataError := repos.GetCommitsData(context.UserContext(), meta.User(context), context.Params("owner"), context.Params("repo"), context.QueryInt("page", 1))
+	if dataError != nil {
+		return dataError
+	}
+
+	meta.SetPageTitle(context, data.Title)
+	return shortcuts.Render(context, "repos/commits", data)
+}

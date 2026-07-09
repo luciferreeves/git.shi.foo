@@ -1,0 +1,27 @@
+{% extends "layouts/base.django" %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block content %}
+{% include "partials/repohead.django" %}
+
+{% if not Commits %}
+<div class="repo-empty">No commits to show.</div>
+{% else %}
+<div class="commit-list">
+{% for commit in Commits %}
+<div class="commit-row">
+  <div class="commit-main">
+    <span class="commit-message">{{ commit.Message }}</span>
+    <div class="commit-sub"><span class="commit-author">{{ commit.Author }}</span> committed {{ commit.When|timeago }}</div>
+  </div>
+  <span class="commit-sha">{{ commit.Short }}</span>
+</div>
+{% endfor %}
+</div>
+{% if HasPrev or HasNext %}
+<div class="pager">
+  {% if HasPrev %}<a class="pager-btn" href="{{ PrevURL }}">← newer</a>{% endif %}
+  {% if HasNext %}<a class="pager-btn" href="{{ NextURL }}">older →</a>{% endif %}
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

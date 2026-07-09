@@ -15,8 +15,15 @@ const (
 	ReadmePlainOpen  = "<pre class=\"readme-plain\">"
 	ReadmePlainClose = "</pre>"
 
-	CommitConcurrency   = 8
-	ImportMaxAttempts   = 3
+	CommitConcurrency = 8
+	CommitsPageSize   = 40
+	ImportMaxAttempts = 3
+
+	TabFiles            = "files"
+	TabCommits          = "commits"
+	TabBranches         = "branches"
+	TabTags             = "tags"
+	TabContributors     = "contributors"
 	ImportEventsURLPath = "/import/events"
 	DonePercent         = 100
 

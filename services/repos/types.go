@@ -54,6 +54,24 @@ type CommitView struct {
 	When    time.Time
 }
 
+type CommitsContext struct {
+	Title         string
+	Owner         string
+	Name          string
+	Private       bool
+	Description   string
+	DefaultBranch string
+	Status        string
+	CloneURL      string
+	ActiveTab     string
+	Commits       []CommitView
+	Page          int
+	HasPrev       bool
+	HasNext       bool
+	PrevURL       string
+	NextURL       string
+}
+
 type ShowContext struct {
 	Title         string
 	Owner         string
@@ -63,6 +81,7 @@ type ShowContext struct {
 	DefaultBranch string
 	Status        string
 	CloneURL      string
+	ActiveTab     string
 	Ready         bool
 	Path          string
 	Crumbs        []Crumb

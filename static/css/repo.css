@@ -183,6 +183,78 @@
   text-align: center;
 }
 
+.commit-list {
+  border: var(--bw) solid var(--border);
+  background: var(--panel);
+}
+
+.commit-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+  padding: var(--sp-5) var(--sp-7);
+  border-bottom: var(--bw) solid var(--border);
+}
+
+.commit-row:last-child {
+  border-bottom: 0;
+}
+
+.commit-row:hover {
+  background: var(--head);
+}
+
+.commit-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.commit-message {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text);
+}
+
+.commit-sub {
+  margin-top: var(--sp-1);
+  color: var(--dim);
+  font-size: var(--fs-tiny);
+}
+
+.commit-author {
+  color: var(--green);
+}
+
+.commit-sha {
+  padding: var(--sp-1) var(--sp-4);
+  border: var(--bw) solid var(--border2);
+  color: var(--purplebr);
+  font-size: var(--fs-tiny);
+  white-space: nowrap;
+}
+
+.pager {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-5);
+  margin-top: var(--sp-7);
+}
+
+.pager-btn {
+  padding: var(--sp-3) var(--sp-7);
+  border: var(--bw) solid var(--border2);
+  color: var(--dim);
+  font-size: var(--fs-xs);
+}
+
+.pager-btn:hover {
+  border-color: var(--cyandim);
+  color: var(--text);
+  text-decoration: none;
+}
+
 .repo-breadcrumbs {
   display: flex;
   flex-wrap: wrap;

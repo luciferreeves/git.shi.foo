@@ -7,7 +7,6 @@ import (
 	"sync"
 
 	"git.shi.foo/account"
-	"git.shi.foo/config"
 	"git.shi.foo/git"
 	jobrepo "git.shi.foo/repositories/job"
 	"git.shi.foo/repositories/repo"
@@ -42,7 +41,8 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		Description:   record.Description,
 		DefaultBranch: record.DefaultBranch,
 		Status:        record.Status,
-		CloneURL:      fmt.Sprintf("%s/%s/%s.git", config.Server.PublicURL, record.Owner, record.Name),
+		CloneURL:      cloneURL(record.Owner, record.Name),
+		SSHCloneURL:   sshCloneURL(record.Owner, record.Name),
 		ActiveTab:     TabFiles,
 		Ready:         record.Status == repo.StatusActive,
 		Ref:           ref,

@@ -25,6 +25,7 @@ func GetContributorsData(requestContext context.Context, currentUser *account.Re
 		DefaultBranch: record.DefaultBranch,
 		Status:        record.Status,
 		CloneURL:      cloneURL(record.Owner, record.Name),
+		SSHCloneURL:   sshCloneURL(record.Owner, record.Name),
 		ActiveTab:     TabContributors,
 	}
 

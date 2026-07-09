@@ -91,6 +91,7 @@ type BranchesContext struct {
 	DefaultBranch string
 	Status        string
 	CloneURL      string
+	SSHCloneURL   string
 	ActiveTab     string
 	Branches      []RefView
 }
@@ -104,6 +105,7 @@ type TagsContext struct {
 	DefaultBranch string
 	Status        string
 	CloneURL      string
+	SSHCloneURL   string
 	ActiveTab     string
 	Tags          []RefView
 }
@@ -117,6 +119,7 @@ type ContributorsContext struct {
 	DefaultBranch string
 	Status        string
 	CloneURL      string
+	SSHCloneURL   string
 	ActiveTab     string
 	Contributors  []ContributorView
 }
@@ -130,6 +133,7 @@ type CommitsContext struct {
 	DefaultBranch string
 	Status        string
 	CloneURL      string
+	SSHCloneURL   string
 	ActiveTab     string
 	Commits       []CommitView
 	Page          int
@@ -148,6 +152,7 @@ type ShowContext struct {
 	DefaultBranch    string
 	Status           string
 	CloneURL         string
+	SSHCloneURL      string
 	ActiveTab        string
 	Ready            bool
 	Ref              string
@@ -185,6 +190,7 @@ type BlobContext struct {
 	DefaultBranch string
 	Status        string
 	CloneURL      string
+	SSHCloneURL   string
 	ActiveTab     string
 	Ref           string
 	RefBranches   []RefOption

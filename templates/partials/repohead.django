@@ -10,10 +10,23 @@
     <span>status <b>{{ Status }}</b></span>
   </div>
   <div class="repo-clone">
-    <span class="repo-clone-label">HTTPS</span>
-    <span class="repo-clone-url">{{ CloneURL }}</span>
+    <input type="radio" name="clone-protocol" id="clone-https" class="clone-radio" checked>
+    <input type="radio" name="clone-protocol" id="clone-ssh" class="clone-radio">
+    <div class="clone-tabs">
+      <label class="clone-tab" for="clone-https">HTTPS</label>
+      <label class="clone-tab" for="clone-ssh">SSH</label>
+    </div>
+    <div class="clone-field" data-protocol="https">
+      <input class="clone-url" type="text" value="{{ CloneURL }}" readonly spellcheck="false">
+      <button class="clone-copy" type="button">copy</button>
+    </div>
+    <div class="clone-field" data-protocol="ssh">
+      <input class="clone-url" type="text" value="{{ SSHCloneURL }}" readonly spellcheck="false">
+      <button class="clone-copy" type="button">copy</button>
+    </div>
   </div>
 </div>
+<script src="{% static "js/clone.js" %}" defer></script>
 
 <nav class="repo-tabs">
   <a class="repo-tab{% if ActiveTab == "files" %} is-active{% endif %}" href="/{{ Owner }}/{{ Name }}">files</a>

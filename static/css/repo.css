@@ -50,7 +50,7 @@
 .repo-clone {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-4);
+  gap: var(--sp-5);
   height: var(--field-h);
   margin-top: var(--sp-6);
   padding: 0 var(--sp-5);
@@ -58,15 +58,75 @@
   border: var(--bw) solid var(--border2);
 }
 
-.repo-clone-label {
-  color: var(--dim);
-  font-size: var(--fs-tiny);
-  letter-spacing: var(--ls-1);
+.clone-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
-.repo-clone-url {
+.clone-tabs {
+  display: inline-flex;
+  gap: var(--sp-3);
+}
+
+.clone-tab {
+  color: var(--faint);
+  font-size: var(--fs-tiny);
+  letter-spacing: var(--ls-1);
+  cursor: pointer;
+}
+
+.clone-tab:hover {
+  color: var(--dim);
+}
+
+#clone-https:checked ~ .clone-tabs .clone-tab[for="clone-https"],
+#clone-ssh:checked ~ .clone-tabs .clone-tab[for="clone-ssh"] {
+  color: var(--cyan);
+}
+
+.clone-field {
+  display: none;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+#clone-https:checked ~ .clone-field[data-protocol="https"],
+#clone-ssh:checked ~ .clone-field[data-protocol="ssh"] {
+  display: inline-flex;
+}
+
+.clone-url {
+  width: 32ch;
+  padding: 0;
+  background: none;
+  border: 0;
   color: var(--cyanlink);
+  font-family: inherit;
   font-size: var(--fs-xs);
+}
+
+.clone-url:focus {
+  outline: none;
+}
+
+.clone-copy {
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--faint);
+  font-family: inherit;
+  font-size: var(--fs-tiny);
+  letter-spacing: var(--ls-1);
+  cursor: pointer;
+}
+
+.clone-copy:hover {
+  color: var(--text);
+}
+
+.clone-copy.is-copied {
+  color: var(--green);
 }
 
 .repo-tabs {

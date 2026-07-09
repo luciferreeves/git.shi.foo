@@ -3,11 +3,9 @@ package repos
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strconv"
 
 	"git.shi.foo/account"
-	"git.shi.foo/config"
 	"git.shi.foo/git"
 	"git.shi.foo/repositories/repo"
 	"git.shi.foo/utils/logger"
@@ -43,7 +41,8 @@ func GetCommitsData(requestContext context.Context, currentUser *account.Respons
 		Description:   record.Description,
 		DefaultBranch: record.DefaultBranch,
 		Status:        record.Status,
-		CloneURL:      fmt.Sprintf("%s/%s/%s.git", config.Server.PublicURL, record.Owner, record.Name),
+		CloneURL:      cloneURL(record.Owner, record.Name),
+		SSHCloneURL:   sshCloneURL(record.Owner, record.Name),
 		ActiveTab:     TabCommits,
 		Page:          page,
 	}

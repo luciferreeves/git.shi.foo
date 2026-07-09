@@ -14,6 +14,12 @@ const (
 
 	PlainFormat = "<pre class=\"blob-code-plain\">%s</pre>"
 
+	SSHUser           = "git"
+	SSHDefaultPort    = "22"
+	SSHFallbackHost   = "localhost"
+	SSHCloneScpFormat = "%s@%s:%s/%s.git"
+	SSHCloneURLFormat = "ssh://%s@%s:%s/%s/%s.git"
+
 	ReadmePlainOpen  = "<pre class=\"readme-plain\">"
 	ReadmePlainClose = "</pre>"
 

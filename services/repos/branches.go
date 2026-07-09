@@ -25,6 +25,7 @@ func GetBranchesData(requestContext context.Context, currentUser *account.Respon
 		DefaultBranch: record.DefaultBranch,
 		Status:        record.Status,
 		CloneURL:      cloneURL(record.Owner, record.Name),
+		SSHCloneURL:   sshCloneURL(record.Owner, record.Name),
 		ActiveTab:     TabBranches,
 	}
 

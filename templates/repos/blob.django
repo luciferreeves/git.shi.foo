@@ -1,20 +1,7 @@
 {% extends "layouts/base.django" %}
 {% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
 {% block content %}
-<div class="repo-header">
-  <div class="repo-identity">
-    <a class="repo-name" href="/{{ Owner }}/{{ Name }}">{{ Owner }}/{{ Name }}</a>
-  </div>
-</div>
-
-<nav class="repo-tabs">
-  <a class="repo-tab is-active" href="/{{ Owner }}/{{ Name }}">files</a>
-  <a class="repo-tab is-disabled">commits</a>
-  <a class="repo-tab is-disabled">branches</a>
-  <a class="repo-tab is-disabled">tags</a>
-  <a class="repo-tab is-disabled">contributors</a>
-  <a class="repo-tab is-disabled">settings</a>
-</nav>
+{% include "partials/repohead.django" %}
 
 <nav class="repo-breadcrumbs">
   <a class="repo-crumb" href="/{{ Owner }}/{{ Name }}">{{ Name }}</a>

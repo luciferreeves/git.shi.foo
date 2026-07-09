@@ -165,13 +165,19 @@ type ImportStreamContext struct {
 }
 
 type BlobContext struct {
-	Title     string
-	Owner     string
-	Name      string
-	Path      string
-	Filename  string
-	Crumbs    []Crumb
-	Content   string
-	IsBinary  bool
-	SizeLabel string
+	Title         string
+	Owner         string
+	Name          string
+	Private       bool
+	Description   string
+	DefaultBranch string
+	Status        string
+	CloneURL      string
+	ActiveTab     string
+	Path          string
+	Filename      string
+	Crumbs        []Crumb
+	Content       string
+	IsBinary      bool
+	SizeLabel     string
 }

@@ -3,7 +3,6 @@ package repos
 import (
 	"bytes"
 	"context"
-	"errors"
 	"fmt"
 	"html"
 
@@ -15,20 +14,11 @@ import (
 	"git.shi.foo/utils/shortcuts"
 
 	"github.com/gofiber/fiber/v2"
-	"gorm.io/gorm"
 )
 
 func GetBlobData(requestContext context.Context, currentUser *account.Response, owner string, name string, path string) (*BlobContext, *fiber.Error) {
-	record, findError := repo.FindByOwnerName(owner, name)
-	if findError != nil {
-		if errors.Is(findError, gorm.ErrRecordNotFound) {
-			return nil, shortcuts.ServiceError(fiber.StatusNotFound, RepoNotFound)
-		}
-		logger.Errorf(LogPrefix, ListLog, findError)
-		return nil, shortcuts.ServiceError(fiber.StatusInternalServerError, ListFailed)
-	}
-
-	if viewError := ensureViewable(requestContext, currentUser, record); viewError != nil {
+	record, viewError := resolveViewable(requestContext, currentUser, owner, name)
+	if viewError != nil {
 		return nil, viewError
 	}
 
@@ -43,13 +33,19 @@ func GetBlobData(requestContext context.Context, currentUser *account.Response, 
 
 	filename := fileName(path)
 	blobContext := &BlobContext{
-		Title:     record.Owner + "/" + record.Name,
-		Owner:     record.Owner,
-		Name:      record.Name,
-		Path:      path,
-		Filename:  filename,
-		Crumbs:    buildCrumbs(record.Owner, record.Name, parentPath(path)),
-		SizeLabel: humanSize(int64(len(content))),
+		Title:         record.Owner + "/" + record.Name,
+		Owner:         record.Owner,
+		Name:          record.Name,
+		Private:       record.Private,
+		Description:   record.Description,
+		DefaultBranch: record.DefaultBranch,
+		Status:        record.Status,
+		CloneURL:      cloneURL(record.Owner, record.Name),
+		ActiveTab:     TabFiles,
+		Path:          path,
+		Filename:      filename,
+		Crumbs:        buildCrumbs(record.Owner, record.Name, parentPath(path)),
+		SizeLabel:     humanSize(int64(len(content))),
 	}
 
 	if isBinary(content) {

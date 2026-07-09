@@ -7,6 +7,7 @@ import (
 	"git.shi.foo/git"
 	"git.shi.foo/utils/logger"
 	"git.shi.foo/utils/markdown"
+	"git.shi.foo/utils/rst"
 )
 
 func loadReadme(owner string, name string, entries []git.TreeEntry) (string, string) {
@@ -20,16 +21,23 @@ func loadReadme(owner string, name string, entries []git.TreeEntry) (string, str
 		return "", ""
 	}
 
-	if isMarkdownName(readmeName) {
-		rendered, renderError := markdown.Render(content)
-		if renderError != nil {
-			logger.Errorf(LogPrefix, ReadmeLog, renderError)
-			return readmeName, plainReadme(content)
-		}
-		return readmeName, rendered
+	switch {
+	case isMarkdownName(readmeName):
+		return readmeName, renderOrPlain(content, markdown.Render)
+	case isRSTName(readmeName):
+		return readmeName, renderOrPlain(content, rst.Render)
+	default:
+		return readmeName, plainReadme(content)
 	}
+}
 
-	return readmeName, plainReadme(content)
+func renderOrPlain(content []byte, renderer func([]byte) (string, error)) string {
+	rendered, renderError := renderer(content)
+	if renderError != nil {
+		logger.Errorf(LogPrefix, ReadmeLog, renderError)
+		return plainReadme(content)
+	}
+	return rendered
 }
 
 func pickReadme(entries []git.TreeEntry) string {
@@ -56,6 +64,10 @@ func pickReadme(entries []git.TreeEntry) string {
 func isMarkdownName(name string) bool {
 	lower := strings.ToLower(name)
 	return strings.HasSuffix(lower, ".md") || strings.HasSuffix(lower, ".markdown")
+}
+
+func isRSTName(name string) bool {
+	return strings.HasSuffix(strings.ToLower(name), ".rst")
 }
 
 func plainReadme(content []byte) string {

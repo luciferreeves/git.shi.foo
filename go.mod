@@ -9,6 +9,7 @@ require (
 	github.com/gofiber/fiber/v2 v2.52.14
 	github.com/gofiber/storage/postgres/v3 v3.6.0
 	github.com/gofiber/template/django/v3 v3.1.14
+	github.com/hhatto/gorst v0.0.0-20181029133204-ca9f730cac5b
 	github.com/joho/godotenv v1.5.1
 	github.com/microcosm-cc/bluemonday v1.0.27
 	github.com/yuin/goldmark v1.8.2

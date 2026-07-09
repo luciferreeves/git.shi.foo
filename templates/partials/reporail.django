@@ -1,0 +1,31 @@
+<div class="rail-panel">
+  <div class="rail-title">:: ABOUT</div>
+  <div class="rail-body">
+    {% if Description %}<p class="rail-about">{{ Description }}</p>{% endif %}
+    {% if Topics %}<div class="rail-topics">{% for topic in Topics %}<span class="rail-topic">{{ topic }}</span>{% endfor %}</div>{% endif %}
+    {% if Homepage %}<div class="rail-link"><a href="{{ Homepage }}" rel="nofollow noopener" target="_blank">{{ Homepage }}</a></div>{% endif %}
+    <div class="rail-detail"><span>owner</span><span class="rail-owner">{{ Owner }}</span></div>
+    {% if CreatedLabel %}<div class="rail-detail"><span>created</span><span>{{ CreatedLabel }}</span></div>{% endif %}
+  </div>
+</div>
+
+{% if Languages %}
+<div class="rail-panel">
+  <div class="rail-title">:: LANGUAGES</div>
+  <div class="rail-body">
+    <div class="lang-bar">{% for lang in Languages %}<span style="flex: {{ lang.Percent }}; background: {{ lang.Color }};"></span>{% endfor %}</div>
+    <div class="lang-legend">{% for lang in Languages %}<span class="lang-item"><span class="lang-dot" style="background: {{ lang.Color }};"></span>{{ lang.Name }} <b>{{ lang.Percent }}%</b></span>{% endfor %}</div>
+  </div>
+</div>
+{% endif %}
+
+{% if RailContributors %}
+<div class="rail-panel">
+  <div class="rail-title">:: CONTRIBUTORS</div>
+  <div class="rail-body">
+    {% for person in RailContributors %}
+    <div class="rail-contributor"><span class="rail-contributor-name">{{ person.Name }}</span><span class="rail-contributor-count">{{ person.Count }} commits</span></div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}

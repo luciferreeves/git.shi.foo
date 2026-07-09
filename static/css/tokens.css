@@ -47,4 +47,7 @@
   --menu-w: 212px;
   --file-commit-max: 340px;
   --ref-name-w: 180px;
+  --rail-w: 320px;
+  --lang-bar-h: 9px;
+  --lang-dot: 8px;
 }

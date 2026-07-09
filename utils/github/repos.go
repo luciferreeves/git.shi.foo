@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"time"
 )
 
 type RepoOwner struct {
@@ -26,8 +27,42 @@ type Repository struct {
 	DefaultBranch string          `json:"default_branch"`
 	Fork          bool            `json:"fork"`
 	Archived      bool            `json:"archived"`
+	Homepage      string          `json:"homepage"`
+	Language      string          `json:"language"`
+	Topics        []string        `json:"topics"`
+	CreatedAt     time.Time       `json:"created_at"`
 	Owner         RepoOwner       `json:"owner"`
 	Permissions   RepoPermissions `json:"permissions"`
+}
+
+func FetchLanguages(requestContext context.Context, accessToken string, owner string, name string) (map[string]int64, error) {
+	endpoint := fmt.Sprintf(LanguagesEndpointFormat, owner, name)
+
+	request, requestError := http.NewRequestWithContext(requestContext, http.MethodGet, endpoint, nil)
+	if requestError != nil {
+		return nil, requestError
+	}
+
+	request.Header.Set("Authorization", "Bearer "+accessToken)
+	request.Header.Set("Accept", "application/vnd.github+json")
+	request.Header.Set("X-GitHub-Api-Version", APIVersion)
+
+	response, responseError := http.DefaultClient.Do(request)
+	if responseError != nil {
+		return nil, responseError
+	}
+	defer response.Body.Close()
+
+	if response.StatusCode != http.StatusOK {
+		return nil, fmt.Errorf(LanguagesFetchFailed, response.StatusCode)
+	}
+
+	languages := make(map[string]int64)
+	if decodeError := json.NewDecoder(response.Body).Decode(&languages); decodeError != nil {
+		return nil, decodeError
+	}
+
+	return languages, nil
 }
 
 func FetchUserRepos(requestContext context.Context, accessToken string) ([]Repository, error) {

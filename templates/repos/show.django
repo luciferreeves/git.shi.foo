@@ -3,6 +3,8 @@
 <link rel="stylesheet" href="{% static "css/chroma.css" %}">
 <link rel="stylesheet" href="{% static "css/markdown.css" %}">{% endblock %}
 {% block content %}
+<div class="repo-grid">
+<div class="repo-center">
 {% include "partials/repohead.django" %}
 
 {% if Importing %}
@@ -73,5 +75,8 @@
 </div>
 {% endif %}
 {% endif %}
+</div>
+<aside class="repo-rail">{% include "partials/reporail.django" %}</aside>
+</div>
 {% endblock %}
 {% block scripts %}<script src="{% static "js/progress.js" %}" defer></script>{% endblock %}

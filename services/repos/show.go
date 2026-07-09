@@ -77,6 +77,16 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		}
 	}
 
+	if data := loadInsights(requestContext, record); data != nil {
+		showContext.Topics = data.Topics
+		showContext.Homepage = data.Homepage
+		showContext.Languages = toLanguageViews(data.Languages)
+		showContext.RailContributors = data.Contributors
+		if !data.CreatedAt.IsZero() {
+			showContext.CreatedLabel = data.CreatedAt.Format(CreatedDateFormat)
+		}
+	}
+
 	return showContext, nil
 }
 

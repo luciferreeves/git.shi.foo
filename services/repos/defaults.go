@@ -1,5 +1,7 @@
 package repos
 
+import "time"
+
 const (
 	LogPrefix   = "Repos"
 	ReposTitle  = "Repositories"
@@ -18,6 +20,12 @@ const (
 	CommitConcurrency = 8
 	CommitsPageSize   = 40
 	ImportMaxAttempts = 3
+
+	InsightsCacheKey     = "repo:insights:%s/%s"
+	InsightsTTL          = 15 * time.Minute
+	LanguageLimit        = 6
+	RailContributorLimit = 5
+	CreatedDateFormat    = "2006-01-02"
 
 	TabFiles            = "files"
 	TabCommits          = "commits"

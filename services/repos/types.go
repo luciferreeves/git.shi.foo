@@ -68,6 +68,12 @@ type ContributorView struct {
 	Count int
 }
 
+type LanguageView struct {
+	Name    string
+	Percent string
+	Color   string
+}
+
 type BranchesContext struct {
 	Title         string
 	Owner         string
@@ -126,26 +132,31 @@ type CommitsContext struct {
 }
 
 type ShowContext struct {
-	Title         string
-	Owner         string
-	Name          string
-	Private       bool
-	Description   string
-	DefaultBranch string
-	Status        string
-	CloneURL      string
-	ActiveTab     string
-	Ready         bool
-	Path          string
-	Crumbs        []Crumb
-	LatestCommit  *CommitView
-	Entries       []EntryView
-	Importing     bool
-	ImportPhase   string
-	ImportPercent int
-	EventsURL     string
-	ReadmeName    string
-	ReadmeHTML    string
+	Title            string
+	Owner            string
+	Name             string
+	Private          bool
+	Description      string
+	DefaultBranch    string
+	Status           string
+	CloneURL         string
+	ActiveTab        string
+	Ready            bool
+	Path             string
+	Crumbs           []Crumb
+	LatestCommit     *CommitView
+	Entries          []EntryView
+	Importing        bool
+	ImportPhase      string
+	ImportPercent    int
+	EventsURL        string
+	ReadmeName       string
+	ReadmeHTML       string
+	Topics           []string
+	Homepage         string
+	CreatedLabel     string
+	Languages        []LanguageView
+	RailContributors []ContributorView
 }
 
 type ImportStreamContext struct {

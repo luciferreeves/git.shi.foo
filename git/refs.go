@@ -21,6 +21,30 @@ func Tags(owner string, name string) ([]Ref, error) {
 	return refs(owner, name, RefsTags)
 }
 
+func RefNames(owner string, name string) (map[string]struct{}, error) {
+	names := make(map[string]struct{})
+
+	for _, prefix := range []string{RefsHeads, RefsTags} {
+		output, runError := runGit(RepoPath(owner, name), "for-each-ref", "--format=%(refname:short)", prefix)
+		if runError != nil {
+			return nil, runError
+		}
+
+		for line := range strings.SplitSeq(strings.TrimRight(string(output), "\n"), "\n") {
+			if line != "" {
+				names[line] = struct{}{}
+			}
+		}
+	}
+
+	return names, nil
+}
+
+func VerifyRef(owner string, name string, ref string) bool {
+	_, runError := runGit(RepoPath(owner, name), "rev-parse", "--verify", "--quiet", ref+"^{commit}")
+	return runError == nil
+}
+
 func refs(owner string, name string, prefix string) ([]Ref, error) {
 	output, runError := runGit(RepoPath(owner, name), "for-each-ref", "--sort=-creatordate", "--format="+RefFormat, prefix)
 	if runError != nil {

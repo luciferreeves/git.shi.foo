@@ -40,15 +40,16 @@ func ensureViewable(requestContext context.Context, currentUser *account.Respons
 	return nil
 }
 
-func treeURL(owner string, name string, path string) string {
+func treeURL(owner string, name string, ref string, path string) string {
+	base := "/" + owner + "/" + name + "/tree/" + ref
 	if path == "" {
-		return "/" + owner + "/" + name
+		return base
 	}
-	return "/" + owner + "/" + name + "/tree/" + path
+	return base + "/" + path
 }
 
-func blobURL(owner string, name string, path string) string {
-	return "/" + owner + "/" + name + "/blob/" + path
+func blobURL(owner string, name string, ref string, path string) string {
+	return "/" + owner + "/" + name + "/blob/" + ref + "/" + path
 }
 
 func importEventsURL(owner string, name string) string {
@@ -76,7 +77,7 @@ func fileName(path string) string {
 	return path
 }
 
-func buildCrumbs(owner string, name string, path string) []Crumb {
+func buildCrumbs(owner string, name string, ref string, path string) []Crumb {
 	crumbs := make([]Crumb, 0)
 	if path == "" {
 		return crumbs
@@ -85,7 +86,7 @@ func buildCrumbs(owner string, name string, path string) []Crumb {
 	accumulated := ""
 	for segment := range strings.SplitSeq(path, "/") {
 		accumulated = childPath(accumulated, segment)
-		crumbs = append(crumbs, Crumb{Name: segment, URL: treeURL(owner, name, accumulated)})
+		crumbs = append(crumbs, Crumb{Name: segment, URL: treeURL(owner, name, ref, accumulated)})
 	}
 
 	return crumbs

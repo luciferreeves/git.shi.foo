@@ -30,7 +30,7 @@ func GetTagsData(requestContext context.Context, currentUser *account.Response, 
 
 	if record.Status == repo.StatusActive {
 		if refs, refError := git.Tags(record.Owner, record.Name); refError == nil {
-			tagsContext.Tags = toRefViews(refs)
+			tagsContext.Tags = toRefViews(record.Owner, record.Name, refs)
 		}
 	}
 

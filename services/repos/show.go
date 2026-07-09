@@ -18,7 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func GetShowData(requestContext context.Context, currentUser *account.Response, owner string, name string, path string) (*ShowContext, *fiber.Error) {
+func GetShowData(requestContext context.Context, currentUser *account.Response, owner string, name string, remainder string) (*ShowContext, *fiber.Error) {
 	record, findError := repo.FindByOwnerName(owner, name)
 	if findError != nil {
 		if errors.Is(findError, gorm.ErrRecordNotFound) {
@@ -32,6 +32,8 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		return nil, viewError
 	}
 
+	ref, path := resolveRef(record.Owner, record.Name, remainder, record.DefaultBranch)
+
 	showContext := &ShowContext{
 		Title:         record.Owner + "/" + record.Name,
 		Owner:         record.Owner,
@@ -43,8 +45,10 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		CloneURL:      fmt.Sprintf("%s/%s/%s.git", config.Server.PublicURL, record.Owner, record.Name),
 		ActiveTab:     TabFiles,
 		Ready:         record.Status == repo.StatusActive,
+		Ref:           ref,
+		RootURL:       treeURL(record.Owner, record.Name, ref, ""),
 		Path:          path,
-		Crumbs:        buildCrumbs(record.Owner, record.Name, path),
+		Crumbs:        buildCrumbs(record.Owner, record.Name, ref, path),
 	}
 
 	if record.Status == repo.StatusImporting {
@@ -60,15 +64,17 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 		return showContext, nil
 	}
 
-	if entries, treeError := git.Tree(record.Owner, record.Name, git.HeadRef, path); treeError == nil {
-		showContext.Entries = toEntryViews(entries, record.Owner, record.Name, path)
-		attachCommits(record.Owner, record.Name, git.HeadRef, path, showContext.Entries)
+	showContext.RefBranches, showContext.RefTags = buildRefOptions(record.Owner, record.Name, ref, path, false)
+
+	if entries, treeError := git.Tree(record.Owner, record.Name, ref, path); treeError == nil {
+		showContext.Entries = toEntryViews(entries, record.Owner, record.Name, ref, path)
+		attachCommits(record.Owner, record.Name, ref, path, showContext.Entries)
 		if path == "" {
-			showContext.ReadmeName, showContext.ReadmeHTML = loadReadme(record.Owner, record.Name, entries)
+			showContext.ReadmeName, showContext.ReadmeHTML = loadReadme(record.Owner, record.Name, ref, entries)
 		}
 	}
 
-	if commit, commitError := git.LatestCommit(record.Owner, record.Name, git.HeadRef); commitError == nil {
+	if commit, commitError := git.LatestCommit(record.Owner, record.Name, ref); commitError == nil {
 		showContext.LatestCommit = &CommitView{
 			Short:   commit.Short,
 			Message: commit.Message,
@@ -90,7 +96,7 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 	return showContext, nil
 }
 
-func toEntryViews(entries []git.TreeEntry, owner string, name string, path string) []EntryView {
+func toEntryViews(entries []git.TreeEntry, owner string, name string, ref string, path string) []EntryView {
 	directories := make([]EntryView, 0)
 	files := make([]EntryView, 0)
 
@@ -104,10 +110,10 @@ func toEntryViews(entries []git.TreeEntry, owner string, name string, path strin
 			IsDir:     entry.Type == git.TypeTree,
 		}
 		if view.IsDir {
-			view.URL = treeURL(owner, name, full)
+			view.URL = treeURL(owner, name, ref, full)
 			directories = append(directories, view)
 		} else {
-			view.URL = blobURL(owner, name, full)
+			view.URL = blobURL(owner, name, ref, full)
 			view.SizeLabel = humanSize(entry.Size)
 			files = append(files, view)
 		}

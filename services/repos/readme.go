@@ -10,13 +10,13 @@ import (
 	"git.shi.foo/utils/rst"
 )
 
-func loadReadme(owner string, name string, entries []git.TreeEntry) (string, string) {
+func loadReadme(owner string, name string, ref string, entries []git.TreeEntry) (string, string) {
 	readmeName := pickReadme(entries)
 	if readmeName == "" {
 		return "", ""
 	}
 
-	content, blobError := git.Blob(owner, name, git.HeadRef, readmeName)
+	content, blobError := git.Blob(owner, name, ref, readmeName)
 	if blobError != nil {
 		return "", ""
 	}

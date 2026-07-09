@@ -47,6 +47,13 @@ type Crumb struct {
 	URL  string
 }
 
+type RefOption struct {
+	Name   string
+	URL    string
+	Active bool
+	IsTag  bool
+}
+
 type CommitView struct {
 	Short   string
 	Message string
@@ -59,6 +66,7 @@ type RefView struct {
 	Short   string
 	Message string
 	Author  string
+	URL     string
 	When    time.Time
 }
 
@@ -142,6 +150,10 @@ type ShowContext struct {
 	CloneURL         string
 	ActiveTab        string
 	Ready            bool
+	Ref              string
+	RefBranches      []RefOption
+	RefTags          []RefOption
+	RootURL          string
 	Path             string
 	Crumbs           []Crumb
 	LatestCommit     *CommitView
@@ -174,6 +186,10 @@ type BlobContext struct {
 	Status        string
 	CloneURL      string
 	ActiveTab     string
+	Ref           string
+	RefBranches   []RefOption
+	RefTags       []RefOption
+	RootURL       string
 	Path          string
 	Filename      string
 	Crumbs        []Crumb

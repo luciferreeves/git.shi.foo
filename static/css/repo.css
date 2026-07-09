@@ -109,7 +109,11 @@
   margin-bottom: var(--sp-6);
 }
 
-.repo-branch {
+.ref-select {
+  position: relative;
+}
+
+.ref-current {
   display: inline-flex;
   align-items: center;
   height: var(--field-h);
@@ -118,6 +122,69 @@
   border: var(--bw) solid var(--border2);
   color: var(--text);
   font-size: var(--fs-xs);
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+
+.ref-current::-webkit-details-marker {
+  display: none;
+}
+
+.ref-current::after {
+  content: "\25be";
+  margin-left: var(--sp-4);
+  color: var(--faint);
+}
+
+.ref-current:hover {
+  border-color: var(--cyandim);
+}
+
+.ref-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(var(--field-h) + var(--sp-2));
+  left: 0;
+  min-width: 220px;
+  max-height: 320px;
+  overflow-y: auto;
+  padding: var(--sp-3) 0;
+  background: var(--panel);
+  border: var(--bw) solid var(--border2);
+}
+
+.ref-group {
+  padding: var(--sp-3) var(--sp-5);
+  color: var(--faint);
+  font-size: var(--fs-micro);
+  letter-spacing: var(--ls-1);
+  text-transform: uppercase;
+}
+
+.ref-option {
+  display: block;
+  padding: var(--sp-2) var(--sp-5);
+  color: var(--dim);
+  font-size: var(--fs-xs);
+  white-space: nowrap;
+}
+
+.ref-option:hover {
+  background: var(--head);
+  color: var(--text);
+}
+
+.ref-option.is-active {
+  color: var(--cyan);
+}
+
+.ref-link {
+  color: var(--cyanlink);
+}
+
+.ref-link:hover {
+  text-decoration: underline;
 }
 
 .repo-latest-commit {

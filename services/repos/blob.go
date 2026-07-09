@@ -16,7 +16,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func GetBlobData(requestContext context.Context, currentUser *account.Response, owner string, name string, path string) (*BlobContext, *fiber.Error) {
+func GetBlobData(requestContext context.Context, currentUser *account.Response, owner string, name string, remainder string) (*BlobContext, *fiber.Error) {
 	record, viewError := resolveViewable(requestContext, currentUser, owner, name)
 	if viewError != nil {
 		return nil, viewError
@@ -26,12 +26,19 @@ func GetBlobData(requestContext context.Context, currentUser *account.Response, 
 		return nil, shortcuts.ServiceError(fiber.StatusNotFound, FileNotFound)
 	}
 
-	content, blobError := git.Blob(record.Owner, record.Name, git.HeadRef, path)
+	ref, path := resolveRef(record.Owner, record.Name, remainder, record.DefaultBranch)
+	if path == "" {
+		return nil, shortcuts.ServiceError(fiber.StatusNotFound, FileNotFound)
+	}
+
+	content, blobError := git.Blob(record.Owner, record.Name, ref, path)
 	if blobError != nil {
 		return nil, shortcuts.ServiceError(fiber.StatusNotFound, FileNotFound)
 	}
 
 	filename := fileName(path)
+	branchOptions, tagOptions := buildRefOptions(record.Owner, record.Name, ref, path, true)
+
 	blobContext := &BlobContext{
 		Title:         record.Owner + "/" + record.Name,
 		Owner:         record.Owner,
@@ -42,9 +49,13 @@ func GetBlobData(requestContext context.Context, currentUser *account.Response, 
 		Status:        record.Status,
 		CloneURL:      cloneURL(record.Owner, record.Name),
 		ActiveTab:     TabFiles,
+		Ref:           ref,
+		RefBranches:   branchOptions,
+		RefTags:       tagOptions,
+		RootURL:       treeURL(record.Owner, record.Name, ref, ""),
 		Path:          path,
 		Filename:      filename,
-		Crumbs:        buildCrumbs(record.Owner, record.Name, parentPath(path)),
+		Crumbs:        buildCrumbs(record.Owner, record.Name, ref, parentPath(path)),
 		SizeLabel:     humanSize(int64(len(content))),
 	}
 

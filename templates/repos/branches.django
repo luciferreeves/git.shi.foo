@@ -9,7 +9,7 @@
 <div class="ref-list">
 {% for branch in Branches %}
 <div class="ref-row">
-  <span class="ref-name">{{ branch.Name }}{% if branch.Name == DefaultBranch %} <span class="ref-default">default</span>{% endif %}</span>
+  <span class="ref-name"><a class="ref-link" href="{{ branch.URL }}">{{ branch.Name }}</a>{% if branch.Name == DefaultBranch %} <span class="ref-default">default</span>{% endif %}</span>
   <span class="ref-commit">{{ branch.Message }}</span>
   <span class="ref-meta"><span class="ref-sha">{{ branch.Short }}</span> {{ branch.When|timeago }}</span>
 </div>

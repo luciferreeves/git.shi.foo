@@ -1,0 +1,17 @@
+<details class="ref-select">
+  <summary class="ref-current">{{ Ref }}</summary>
+  <div class="ref-menu">
+    {% if RefBranches %}
+    <div class="ref-group">branches</div>
+    {% for option in RefBranches %}
+    <a class="ref-option{% if option.Active %} is-active{% endif %}" href="{{ option.URL }}">{{ option.Name }}</a>
+    {% endfor %}
+    {% endif %}
+    {% if RefTags %}
+    <div class="ref-group">tags</div>
+    {% for option in RefTags %}
+    <a class="ref-option{% if option.Active %} is-active{% endif %}" href="{{ option.URL }}">{{ option.Name }}</a>
+    {% endfor %}
+    {% endif %}
+  </div>
+</details>

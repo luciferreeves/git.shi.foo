@@ -30,9 +30,9 @@
 {% elif not Entries %}
 <div class="repo-empty">This repository is empty.</div>
 {% else %}
-{% if LatestCommit %}
 <div class="repo-branchbar">
-  <span class="repo-branch">{{ DefaultBranch }}</span>
+  {% include "partials/refselect.django" %}
+  {% if LatestCommit %}
   <span class="repo-latest-commit">
     <span class="repo-commit-sha">{{ LatestCommit.Short }}</span>
     <span>{{ LatestCommit.Message }}</span>
@@ -41,11 +41,11 @@
     <span class="repo-meta-separator">·</span>
     <span>{{ LatestCommit.When|timeago }}</span>
   </span>
+  {% endif %}
 </div>
-{% endif %}
 
 <nav class="repo-breadcrumbs">
-  <a class="repo-crumb" href="/{{ Owner }}/{{ Name }}">{{ Name }}</a>
+  <a class="repo-crumb" href="{{ RootURL }}">{{ Name }}</a>
   {% for crumb in Crumbs %}
   <span class="repo-crumb-separator">/</span>
   {% if forloop.Last %}<span class="repo-crumb is-current">{{ crumb.Name }}</span>

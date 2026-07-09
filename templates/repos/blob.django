@@ -3,8 +3,12 @@
 {% block content %}
 {% include "partials/repohead.django" %}
 
+<div class="repo-branchbar">
+  {% include "partials/refselect.django" %}
+</div>
+
 <nav class="repo-breadcrumbs">
-  <a class="repo-crumb" href="/{{ Owner }}/{{ Name }}">{{ Name }}</a>
+  <a class="repo-crumb" href="{{ RootURL }}">{{ Name }}</a>
   {% for crumb in Crumbs %}
   <span class="repo-crumb-separator">/</span>
   <a class="repo-crumb" href="{{ crumb.URL }}">{{ crumb.Name }}</a>

@@ -9,7 +9,7 @@
 <div class="ref-list">
 {% for tag in Tags %}
 <div class="ref-row">
-  <span class="ref-name">{{ tag.Name }}</span>
+  <span class="ref-name"><a class="ref-link" href="{{ tag.URL }}">{{ tag.Name }}</a></span>
   <span class="ref-commit">{{ tag.Message }}</span>
   <span class="ref-meta"><span class="ref-sha">{{ tag.Short }}</span> {{ tag.When|timeago }}</span>
 </div>

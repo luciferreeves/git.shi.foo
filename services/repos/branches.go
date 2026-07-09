@@ -30,14 +30,14 @@ func GetBranchesData(requestContext context.Context, currentUser *account.Respon
 
 	if record.Status == repo.StatusActive {
 		if refs, refError := git.Branches(record.Owner, record.Name); refError == nil {
-			branchesContext.Branches = toRefViews(refs)
+			branchesContext.Branches = toRefViews(record.Owner, record.Name, refs)
 		}
 	}
 
 	return branchesContext, nil
 }
 
-func toRefViews(refs []git.Ref) []RefView {
+func toRefViews(owner string, name string, refs []git.Ref) []RefView {
 	views := make([]RefView, 0, len(refs))
 	for index := range refs {
 		views = append(views, RefView{
@@ -45,6 +45,7 @@ func toRefViews(refs []git.Ref) []RefView {
 			Short:   refs[index].Short,
 			Message: refs[index].Message,
 			Author:  refs[index].Author,
+			URL:     treeURL(owner, name, refs[index].Name, ""),
 			When:    refs[index].When,
 		})
 	}

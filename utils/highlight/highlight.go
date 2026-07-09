@@ -3,6 +3,8 @@ package highlight
 import (
 	"bytes"
 
+	"git.shi.foo/utils/syntax"
+
 	"github.com/alecthomas/chroma/v2"
 	"github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/alecthomas/chroma/v2/lexers"
@@ -16,7 +18,7 @@ func Highlight(filename string, source string) (string, error) {
 	}
 	lexer = chroma.Coalesce(lexer)
 
-	style := styles.Get(StyleName)
+	style := styles.Get(syntax.StyleName)
 	if style == nil {
 		style = styles.Fallback
 	}

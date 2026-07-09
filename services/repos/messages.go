@@ -7,6 +7,7 @@ const (
 	MetadataLog     = "Failed to fetch repo metadata: %v"
 	CreateLog       = "Failed to create repo row: %v"
 	HighlightLog    = "Failed to highlight file: %v"
+	ReadmeLog       = "Failed to render README: %v"
 	EnqueueLog      = "Failed to enqueue import job: %v"
 	ReconcileLog    = "Failed to reconcile imports: %v"
 	StatusUpdateLog = "Failed to update repo status: %v"

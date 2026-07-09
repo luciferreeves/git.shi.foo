@@ -1,0 +1,90 @@
+package syntax
+
+import (
+	"github.com/alecthomas/chroma/v2"
+	"github.com/alecthomas/chroma/v2/styles"
+)
+
+var Style = styles.Register(chroma.MustNewStyle(StyleName, chroma.StyleEntries{
+	chroma.Background: "#d4d4d4 bg:#141414",
+	chroma.Error:      "#e36d6d",
+
+	chroma.Comment:          "italic #646464",
+	chroma.CommentHashbang:  "italic #646464",
+	chroma.CommentMultiline: "italic #646464",
+	chroma.CommentSingle:    "italic #646464",
+	chroma.CommentSpecial:   "italic #646464",
+	chroma.CommentPreproc:   "#df81cf",
+
+	chroma.Keyword:            "#df81cf",
+	chroma.KeywordConstant:    "#fca660",
+	chroma.KeywordDeclaration: "#df81cf",
+	chroma.KeywordNamespace:   "#df81cf",
+	chroma.KeywordPseudo:      "#df81cf",
+	chroma.KeywordReserved:    "#df81cf",
+	chroma.KeywordType:        "#fadd75",
+
+	chroma.Operator:     "#7eeaf6",
+	chroma.OperatorWord: "#df81cf",
+	chroma.Punctuation:  "#d4d4d4",
+
+	chroma.Name:                 "#d4d4d4",
+	chroma.NameAttribute:        "#fadd75",
+	chroma.NameBuiltin:          "#5d8dee",
+	chroma.NameBuiltinPseudo:    "italic #e36d6d",
+	chroma.NameClass:            "#fadd75",
+	chroma.NameConstant:         "#fca660",
+	chroma.NameDecorator:        "italic #5d8dee",
+	chroma.NameEntity:           "#fca660",
+	chroma.NameException:        "#e36d6d",
+	chroma.NameFunction:         "#5d8dee",
+	chroma.NameFunctionMagic:    "#5d8dee",
+	chroma.NameLabel:            "#e36d6d",
+	chroma.NameNamespace:        "#d4d4d4",
+	chroma.NameOther:            "#d4d4d4",
+	chroma.NameTag:              "#e36d6d",
+	chroma.NameVariable:         "#d4d4d4",
+	chroma.NameVariableClass:    "#d4d4d4",
+	chroma.NameVariableGlobal:   "#d4d4d4",
+	chroma.NameVariableInstance: "#d4d4d4",
+
+	chroma.LiteralString:          "#61d67e",
+	chroma.LiteralStringAffix:     "#61d67e",
+	chroma.LiteralStringBacktick:  "#61d67e",
+	chroma.LiteralStringChar:      "#61d67e",
+	chroma.LiteralStringDelimiter: "#61d67e",
+	chroma.LiteralStringDoc:       "italic #646464",
+	chroma.LiteralStringDouble:    "#61d67e",
+	chroma.LiteralStringEscape:    "#7eeaf6",
+	chroma.LiteralStringHeredoc:   "#61d67e",
+	chroma.LiteralStringInterpol:  "#7eeaf6",
+	chroma.LiteralStringOther:     "#61d67e",
+	chroma.LiteralStringRegex:     "#7eeaf6",
+	chroma.LiteralStringSingle:    "#61d67e",
+	chroma.LiteralStringSymbol:    "#61d67e",
+
+	chroma.LiteralNumber:            "#fca660",
+	chroma.LiteralNumberBin:         "#fca660",
+	chroma.LiteralNumberFloat:       "#fca660",
+	chroma.LiteralNumberHex:         "#fca660",
+	chroma.LiteralNumberInteger:     "#fca660",
+	chroma.LiteralNumberIntegerLong: "#fca660",
+	chroma.LiteralNumberOct:         "#fca660",
+	chroma.Literal:                  "#fca660",
+	chroma.LiteralDate:              "#61d67e",
+
+	chroma.GenericDeleted:    "#e36d6d",
+	chroma.GenericEmph:       "italic",
+	chroma.GenericError:      "#e36d6d",
+	chroma.GenericHeading:    "bold #61d67e",
+	chroma.GenericInserted:   "#61d67e",
+	chroma.GenericOutput:     "#646464",
+	chroma.GenericPrompt:     "#646464",
+	chroma.GenericStrong:     "bold",
+	chroma.GenericSubheading: "#61d67e",
+	chroma.GenericTraceback:  "#e36d6d",
+
+	chroma.LineNumbers:      "#343434",
+	chroma.LineNumbersTable: "#343434",
+	chroma.TextWhitespace:   "#343434",
+}))

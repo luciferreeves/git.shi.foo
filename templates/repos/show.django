@@ -1,5 +1,7 @@
 {% extends "layouts/base.django" %}
-{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">{% endblock %}
+{% block styles %}<link rel="stylesheet" href="{% static "css/repo.css" %}">
+<link rel="stylesheet" href="{% static "css/chroma.css" %}">
+<link rel="stylesheet" href="{% static "css/markdown.css" %}">{% endblock %}
 {% block content %}
 <div class="repo-header">
   <div class="repo-identity">
@@ -82,6 +84,13 @@
 {% endfor %}
 </tbody>
 </table>
+
+{% if ReadmeHTML %}
+<div class="readme-panel">
+  <div class="readme-tabs"><span class="readme-name">{{ ReadmeName }}</span></div>
+  <div class="markdown-body">{{ ReadmeHTML|safe }}</div>
+</div>
+{% endif %}
 {% endif %}
 {% endblock %}
 {% block scripts %}<script src="{% static "js/progress.js" %}" defer></script>{% endblock %}

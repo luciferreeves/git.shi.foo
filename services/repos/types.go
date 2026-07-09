@@ -69,6 +69,8 @@ type ShowContext struct {
 	ImportPhase   string
 	ImportPercent int
 	EventsURL     string
+	ReadmeName    string
+	ReadmeHTML    string
 }
 
 type ImportStreamContext struct {

@@ -60,6 +60,9 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 
 	if entries, treeError := git.Tree(record.Owner, record.Name, git.HeadRef, path); treeError == nil {
 		showContext.Entries = toEntryViews(entries, record.Owner, record.Name, path)
+		if path == "" {
+			showContext.ReadmeName, showContext.ReadmeHTML = loadReadme(record.Owner, record.Name, entries)
+		}
 	}
 
 	if commit, commitError := git.LatestCommit(record.Owner, record.Name, git.HeadRef); commitError == nil {

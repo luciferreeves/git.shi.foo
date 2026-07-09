@@ -12,6 +12,9 @@ const (
 
 	PlainFormat = "<pre class=\"blob-code-plain\">%s</pre>"
 
+	ReadmePlainOpen  = "<pre class=\"readme-plain\">"
+	ReadmePlainClose = "</pre>"
+
 	ImportMaxAttempts   = 3
 	ImportEventsURLPath = "/import/events"
 	DonePercent         = 100

@@ -3,19 +3,37 @@ package rst
 import (
 	"bytes"
 	"fmt"
+	"html"
 	"os/exec"
+	"regexp"
 
+	"git.shi.foo/utils/highlight"
 	"git.shi.foo/utils/sanitize"
 
 	gorst "github.com/hhatto/gorst"
 )
 
+var codeBlockPattern = regexp.MustCompile(`(?s)<pre class="([^"]+)"><code>(.*?)</code></pre>`)
+
 func Render(source []byte) (string, error) {
 	if rendered, pandocError := renderPandoc(source); pandocError == nil {
-		return sanitize.HTML(rendered), nil
+		return sanitize.HTML([]byte(highlightCodeBlocks(string(rendered)))), nil
 	}
 
 	return renderGorst(source)
+}
+
+func highlightCodeBlocks(rendered string) string {
+	return codeBlockPattern.ReplaceAllStringFunc(rendered, func(match string) string {
+		groups := codeBlockPattern.FindStringSubmatch(match)
+		code := html.UnescapeString(groups[2])
+
+		highlighted, highlightError := highlight.Classes(groups[1], code)
+		if highlightError != nil {
+			return match
+		}
+		return highlighted
+	})
 }
 
 func renderPandoc(source []byte) ([]byte, error) {

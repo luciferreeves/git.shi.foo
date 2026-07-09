@@ -115,6 +115,16 @@
   max-width: 100%;
 }
 
+.markdown-body p:has(> a:only-child > img:only-child) {
+  display: inline-block;
+  margin: 0 var(--sp-3) var(--sp-3) 0;
+  vertical-align: middle;
+}
+
+.markdown-body .line-block {
+  margin: 0;
+}
+
 .markdown-body code {
   background: var(--head);
   border: var(--bw) solid var(--border);

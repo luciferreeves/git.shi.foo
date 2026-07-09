@@ -37,3 +37,30 @@ func Highlight(filename string, source string) (string, error) {
 
 	return buffer.String(), nil
 }
+
+func Classes(language string, source string) (string, error) {
+	lexer := lexers.Get(language)
+	if lexer == nil {
+		lexer = lexers.Fallback
+	}
+	lexer = chroma.Coalesce(lexer)
+
+	style := styles.Get(syntax.StyleName)
+	if style == nil {
+		style = styles.Fallback
+	}
+
+	formatter := html.New(html.WithClasses(true))
+
+	iterator, tokeniseError := lexer.Tokenise(nil, source)
+	if tokeniseError != nil {
+		return "", tokeniseError
+	}
+
+	var buffer bytes.Buffer
+	if formatError := formatter.Format(&buffer, style, iterator); formatError != nil {
+		return "", formatError
+	}
+
+	return buffer.String(), nil
+}

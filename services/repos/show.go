@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sync"
 
 	"git.shi.foo/account"
 	"git.shi.foo/config"
@@ -60,6 +61,7 @@ func GetShowData(requestContext context.Context, currentUser *account.Response, 
 
 	if entries, treeError := git.Tree(record.Owner, record.Name, git.HeadRef, path); treeError == nil {
 		showContext.Entries = toEntryViews(entries, record.Owner, record.Name, path)
+		attachCommits(record.Owner, record.Name, git.HeadRef, path, showContext.Entries)
 		if path == "" {
 			showContext.ReadmeName, showContext.ReadmeHTML = loadReadme(record.Owner, record.Name, entries)
 		}
@@ -101,6 +103,32 @@ func toEntryViews(entries []git.TreeEntry, owner string, name string, path strin
 	}
 
 	return append(directories, files...)
+}
+
+func attachCommits(owner string, name string, ref string, path string, views []EntryView) {
+	var waitGroup sync.WaitGroup
+	semaphore := make(chan struct{}, CommitConcurrency)
+
+	for index := range views {
+		waitGroup.Add(1)
+		go func(position int) {
+			defer waitGroup.Done()
+			semaphore <- struct{}{}
+			defer func() { <-semaphore }()
+
+			full := childPath(path, views[position].Name)
+			commit, commitError := git.LastCommitForPath(owner, name, ref, full)
+			if commitError != nil {
+				return
+			}
+
+			views[position].CommitMessage = commit.Message
+			views[position].CommitAuthor = commit.Author
+			views[position].CommitWhen = commit.When
+		}(index)
+	}
+
+	waitGroup.Wait()
 }
 
 func humanSize(size int64) string {

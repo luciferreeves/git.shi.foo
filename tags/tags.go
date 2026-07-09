@@ -24,6 +24,7 @@ func Initialize() {
 
 	filters := []TemplateFilter{
 		{Name: "active", Filter: active},
+		{Name: "timeago", Filter: timeago},
 	}
 
 	for _, tag := range tags {

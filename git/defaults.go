@@ -8,6 +8,7 @@ const (
 	RepoSuffix          = ".git"
 	CleanCloneURLFormat = "https://github.com/%s/%s.git"
 	HeadRef             = "HEAD"
+	CommitFormat        = "--format=%H%x1f%h%x1f%s%x1f%an%x1f%aI"
 	TypeTree            = "tree"
 	TypeBlob            = "blob"
 	GitTokenEnv         = "GIT_ASKPASS_TOKEN"

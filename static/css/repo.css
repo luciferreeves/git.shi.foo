@@ -154,6 +154,25 @@
 .file-size {
   text-align: right;
   color: var(--faint);
+  white-space: nowrap;
+}
+
+.file-commit {
+  max-width: var(--file-commit-max);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--dim);
+}
+
+.file-author {
+  white-space: nowrap;
+  color: var(--green);
+}
+
+.file-time {
+  white-space: nowrap;
+  color: var(--dim);
 }
 
 .repo-empty {

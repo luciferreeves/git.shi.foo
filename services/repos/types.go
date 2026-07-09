@@ -31,12 +31,15 @@ type IndexContext struct {
 }
 
 type EntryView struct {
-	Type      string
-	Name      string
-	Size      int64
-	SizeLabel string
-	IsDir     bool
-	URL       string
+	Type          string
+	Name          string
+	Size          int64
+	SizeLabel     string
+	IsDir         bool
+	URL           string
+	CommitMessage string
+	CommitAuthor  string
+	CommitWhen    time.Time
 }
 
 type Crumb struct {

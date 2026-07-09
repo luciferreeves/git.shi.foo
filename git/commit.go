@@ -15,12 +15,28 @@ type Commit struct {
 }
 
 func LatestCommit(owner string, name string, ref string) (*Commit, error) {
-	output, runError := runGit(RepoPath(owner, name), "log", "-1", "--format=%H%x1f%h%x1f%s%x1f%an%x1f%aI", ref)
+	output, runError := runGit(RepoPath(owner, name), "log", "-1", CommitFormat, ref)
 	if runError != nil {
 		return nil, runError
 	}
+	return parseCommit(output)
+}
 
-	fields := strings.Split(strings.TrimRight(string(output), "\n"), "\x1f")
+func LastCommitForPath(owner string, name string, ref string, path string) (*Commit, error) {
+	output, runError := runGit(RepoPath(owner, name), "log", "-1", CommitFormat, ref, "--", path)
+	if runError != nil {
+		return nil, runError
+	}
+	return parseCommit(output)
+}
+
+func parseCommit(output []byte) (*Commit, error) {
+	trimmed := strings.TrimRight(string(output), "\n")
+	if trimmed == "" {
+		return nil, errors.New(CommitParseFailed)
+	}
+
+	fields := strings.Split(trimmed, "\x1f")
 	if len(fields) < 5 {
 		return nil, errors.New(CommitParseFailed)
 	}

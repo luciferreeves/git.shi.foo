@@ -60,6 +60,8 @@
     <span>{{ LatestCommit.Message }}</span>
     <span class="repo-meta-separator">·</span>
     <span class="repo-commit-author">{{ LatestCommit.Author }}</span>
+    <span class="repo-meta-separator">·</span>
+    <span>{{ LatestCommit.When|timeago }}</span>
   </span>
 </div>
 {% endif %}
@@ -74,11 +76,14 @@
 </nav>
 
 <table class="file-table">
-<thead><tr><th>name</th><th class="file-size">size</th></tr></thead>
+<thead><tr><th>name</th><th class="file-commit">last commit</th><th class="file-author">author</th><th class="file-time">time</th><th class="file-size">size</th></tr></thead>
 <tbody>
 {% for entry in Entries %}
 <tr>
 <td class="file-name{% if entry.IsDir %} is-dir{% endif %}"><a class="file-link" href="{{ entry.URL }}">{{ entry.Name }}{% if entry.IsDir %}/{% endif %}</a></td>
+<td class="file-commit">{{ entry.CommitMessage }}</td>
+<td class="file-author">{{ entry.CommitAuthor }}</td>
+<td class="file-time">{{ entry.CommitWhen|timeago }}</td>
 <td class="file-size">{{ entry.SizeLabel }}</td>
 </tr>
 {% endfor %}

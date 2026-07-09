@@ -15,6 +15,7 @@ const (
 	ReadmePlainOpen  = "<pre class=\"readme-plain\">"
 	ReadmePlainClose = "</pre>"
 
+	CommitConcurrency   = 8
 	ImportMaxAttempts   = 3
 	ImportEventsURLPath = "/import/events"
 	DonePercent         = 100

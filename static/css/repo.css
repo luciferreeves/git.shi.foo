@@ -541,7 +541,8 @@
   overflow: hidden;
 }
 
-.lang-bar span {
+.lang-segment {
+  min-width: 0;
   height: 100%;
 }
 
@@ -704,8 +705,24 @@
 }
 
 .import-progress-bar {
+  display: block;
+  appearance: none;
+  width: 100%;
   height: 100%;
-  width: 0;
+  border: 0;
+  background: transparent;
+}
+
+.import-progress-bar::-webkit-progress-bar {
+  background: transparent;
+}
+
+.import-progress-bar::-webkit-progress-value {
+  background: var(--cyan);
+  transition: width var(--progress-transition) ease;
+}
+
+.import-progress-bar::-moz-progress-bar {
   background: var(--cyan);
   transition: width var(--progress-transition) ease;
 }

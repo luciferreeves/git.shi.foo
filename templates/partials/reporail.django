@@ -13,8 +13,8 @@
 <div class="rail-panel">
   <div class="rail-title">:: LANGUAGES</div>
   <div class="rail-body">
-    <div class="lang-bar">{% for lang in Languages %}<span style="flex: {{ lang.Percent }}; background: {{ lang.Color }};"></span>{% endfor %}</div>
-    <div class="lang-legend">{% for lang in Languages %}<span class="lang-item"><span class="lang-dot" style="background: {{ lang.Color }};"></span>{{ lang.Name }} <b>{{ lang.Percent }}%</b></span>{% endfor %}</div>
+    <div class="lang-bar" aria-hidden="true">{% for lang in Languages %}<svg class="lang-segment" width="{{ lang.Width }}" viewBox="0 0 1 1" preserveAspectRatio="none" focusable="false"><rect width="1" height="1" fill="{{ lang.Color }}" /></svg>{% endfor %}</div>
+    <div class="lang-legend">{% for lang in Languages %}<span class="lang-item"><svg class="lang-dot" viewBox="0 0 1 1" aria-hidden="true" focusable="false"><rect width="1" height="1" fill="{{ lang.Color }}" /></svg>{{ lang.Name }} <b>{{ lang.Percent }}%</b></span>{% endfor %}</div>
   </div>
 </div>
 {% endif %}

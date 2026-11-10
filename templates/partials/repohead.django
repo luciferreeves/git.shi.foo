@@ -1,6 +1,6 @@
 <div class="repo-header">
   <div class="repo-identity">
-    <a class="repo-name" href="/{{ Owner }}/{{ Name }}">{{ Owner }}/{{ Name }}</a>
+    <a class="repo-name" href="{% url "repo.show" owner=Owner repo=Name %}">{{ Owner }}/{{ Name }}</a>
     <span class="repo-visibility">{% if Private %}private{% else %}public{% endif %}</span>
   </div>
   {% if Description %}<p class="repo-description">{{ Description }}</p>{% endif %}
@@ -29,10 +29,10 @@
 <script src="{% static "js/clone.js" %}" defer></script>
 
 <nav class="repo-tabs">
-  <a class="repo-tab{% if ActiveTab == "files" %} is-active{% endif %}" href="/{{ Owner }}/{{ Name }}">files</a>
-  <a class="repo-tab{% if ActiveTab == "commits" %} is-active{% endif %}" href="/{{ Owner }}/{{ Name }}/commits">commits</a>
-  <a class="repo-tab{% if ActiveTab == "branches" %} is-active{% endif %}" href="/{{ Owner }}/{{ Name }}/branches">branches</a>
-  <a class="repo-tab{% if ActiveTab == "tags" %} is-active{% endif %}" href="/{{ Owner }}/{{ Name }}/tags">tags</a>
-  <a class="repo-tab{% if ActiveTab == "contributors" %} is-active{% endif %}" href="/{{ Owner }}/{{ Name }}/contributors">contributors</a>
+  <a class="repo-tab{% if ActiveTab == "files" %} is-active{% endif %}" href="{% url "repo.show" owner=Owner repo=Name %}">files</a>
+  <a class="repo-tab{% if ActiveTab == "commits" %} is-active{% endif %}" href="{% url "repo.commits" owner=Owner repo=Name %}">commits</a>
+  <a class="repo-tab{% if ActiveTab == "branches" %} is-active{% endif %}" href="{% url "repo.branches" owner=Owner repo=Name %}">branches</a>
+  <a class="repo-tab{% if ActiveTab == "tags" %} is-active{% endif %}" href="{% url "repo.tags" owner=Owner repo=Name %}">tags</a>
+  <a class="repo-tab{% if ActiveTab == "contributors" %} is-active{% endif %}" href="{% url "repo.contributors" owner=Owner repo=Name %}">contributors</a>
   <a class="repo-tab is-disabled">settings</a>
 </nav>

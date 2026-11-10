@@ -79,6 +79,7 @@ type ContributorView struct {
 type LanguageView struct {
 	Name    string
 	Percent string
+	Width   string
 	Color   string
 }
 

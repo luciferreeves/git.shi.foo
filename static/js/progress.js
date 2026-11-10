@@ -20,7 +20,7 @@
     }
 
     if (typeof progress.percent === "number" && bar) {
-      bar.style.width = progress.percent + "%";
+      bar.value = progress.percent;
     }
     if (typeof progress.percent === "number" && percentLabel) {
       percentLabel.textContent = progress.percent;

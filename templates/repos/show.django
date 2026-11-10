@@ -14,7 +14,7 @@
     <span class="import-progress-phase" data-role="phase">{{ ImportPhase }}</span>
   </div>
   <div class="import-progress-track">
-    <div class="import-progress-bar" data-role="bar" style="width: {{ ImportPercent }}%;"></div>
+    <progress class="import-progress-bar" data-role="bar" value="{{ ImportPercent }}" max="100" aria-label="Repository import progress">{{ ImportPercent }}%</progress>
   </div>
   <div class="import-progress-meta">
     <span data-role="percent">{{ ImportPercent }}</span>% mirrored
@@ -23,7 +23,7 @@
 {% elif not Ready %}
 <div class="repo-empty repo-failed">
   <p>This repository failed to import.</p>
-  <form method="post" action="/{{ Owner }}/{{ Name }}/import/retry">
+  <form method="post" action="{% url "repo.import.retry" owner=Owner repo=Name %}">
     <button type="submit" class="retry-button">Retry import</button>
   </form>
 </div>

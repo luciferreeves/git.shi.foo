@@ -102,14 +102,18 @@ func toLanguageViews(languages map[string]int64) []LanguageView {
 		return languages[names[first]] > languages[names[second]]
 	})
 
-	views := make([]LanguageView, 0)
+	names = names[:min(len(names), LanguageLimit)]
+	var displayedTotal int64
+	for _, language := range names {
+		displayedTotal += languages[language]
+	}
+
+	views := make([]LanguageView, 0, len(names))
 	for index, language := range names {
-		if index >= LanguageLimit {
-			break
-		}
 		views = append(views, LanguageView{
 			Name:    language,
 			Percent: fmt.Sprintf("%.1f", float64(languages[language])/float64(total)*100),
+			Width:   fmt.Sprintf("%.6f%%", float64(languages[language])/float64(displayedTotal)*100),
 			Color:   languagePalette[index%len(languagePalette)],
 		})
 	}

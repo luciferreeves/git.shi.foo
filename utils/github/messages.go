@@ -12,4 +12,6 @@ const (
 
 	InstallationsFetchFailed     = "failed to fetch installations: status %d"
 	InstallationReposFetchFailed = "failed to fetch installation repos: status %d"
+	RepoInstallationFetchFailed  = "Failed to find the GitHub App installation for this repository: status %d."
+	RepoInstallationMissing      = "GitHub returned no App installation for this repository."
 )

@@ -35,7 +35,7 @@ func loadInsights(requestContext context.Context, record *models.Repo) *insights
 		}
 	}
 
-	token, tokenError := credentials.AccessTokenForUser(requestContext, record.ImportedBy)
+	token, tokenError := credentials.RepositoryAccessToken(requestContext, record.Owner, record.Name)
 	if tokenError != nil {
 		return nil
 	}

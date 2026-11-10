@@ -3,19 +3,20 @@ package github
 import "time"
 
 const (
-	LogPrefix               = "GitHub"
-	StateLength             = 32
-	StateAlphabet           = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-	StateKey                = "oauth_state"
-	QueryParamCode          = "code"
-	QueryParamState         = "state"
-	APIBase                 = "https://api.github.com"
-	UserEndpoint            = APIBase + "/user"
-	UserKeysEndpoint        = APIBase + "/user/keys"
-	UserEmailsEndpoint      = APIBase + "/user/emails"
-	UserReposEndpoint       = APIBase + "/user/repos?per_page=100&sort=updated"
-	RepoEndpointFormat      = APIBase + "/repos/%s/%s"
-	LanguagesEndpointFormat = APIBase + "/repos/%s/%s/languages"
+	LogPrefix                      = "GitHub"
+	StateLength                    = 32
+	StateAlphabet                  = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+	StateKey                       = "oauth_state"
+	QueryParamCode                 = "code"
+	QueryParamState                = "state"
+	APIBase                        = "https://api.github.com"
+	UserEndpoint                   = APIBase + "/user"
+	UserKeysEndpoint               = APIBase + "/user/keys"
+	UserEmailsEndpoint             = APIBase + "/user/emails"
+	UserReposEndpoint              = APIBase + "/user/repos?per_page=100&sort=updated"
+	RepoEndpointFormat             = APIBase + "/repos/%s/%s"
+	LanguagesEndpointFormat        = APIBase + "/repos/%s/%s/languages"
+	RepoInstallationEndpointFormat = APIBase + "/repos/%s/%s/installation"
 
 	UserInstallationsEndpoint       = APIBase + "/user/installations?per_page=100"
 	InstallationReposEndpointFormat = APIBase + "/user/installations/%d/repositories?per_page=100"

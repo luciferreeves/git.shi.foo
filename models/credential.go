@@ -4,6 +4,7 @@ import "gorm.io/gorm"
 
 type Credential struct {
 	gorm.Model
-	UserID       uint   `gorm:"uniqueIndex;not null"`
-	RefreshToken string `gorm:"type:text;not null"`
+	UserID                  uint   `gorm:"uniqueIndex;not null"`
+	RefreshToken            string `gorm:"type:text;not null"`
+	ReauthorizationRequired bool   `gorm:"not null;default:false"`
 }

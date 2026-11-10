@@ -4,7 +4,6 @@ import (
 	"errors"
 
 	"git.shi.foo/models"
-	"git.shi.foo/repositories/credential"
 	"git.shi.foo/repositories/invitation"
 	"git.shi.foo/repositories/user"
 	"git.shi.foo/utils/github"
@@ -77,13 +76,4 @@ func createMember(providerID string, identity *github.Identity, admin bool) (*mo
 	}
 
 	return created, nil
-}
-
-func storeRefreshToken(userID uint, refreshToken string) error {
-	ciphertext, encryptError := github.Encrypt(refreshToken)
-	if encryptError != nil {
-		return encryptError
-	}
-
-	return credential.Upsert(userID, ciphertext)
 }

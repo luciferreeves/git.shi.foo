@@ -40,12 +40,10 @@ func CompleteLogin(userContext context.Context, code string) (string, *fiber.Err
 		return "", admitError
 	}
 
-	if storeError := storeRefreshToken(storedUser.ID, token.RefreshToken); storeError != nil {
+	if storeError := credentials.StoreTokenPair(storedUser.ID, token); storeError != nil {
 		logger.Errorf(LogPrefix, CredentialStoreLog, storeError)
 		return "", shortcuts.ServiceError(fiber.StatusInternalServerError, CredentialStoreFailed)
 	}
-
-	credentials.SeedAccessToken(storedUser.ID, token.AccessToken, token.Expiry)
 
 	return providerID, nil
 }

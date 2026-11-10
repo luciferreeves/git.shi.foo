@@ -52,6 +52,7 @@ func main() {
 
 	workerContext, stopWorkers := context.WithCancel(context.Background())
 	jobs.Start(workerContext)
+	servicesync.Start(workerContext)
 
 	if sshError := ssh.Start(workerContext); sshError != nil {
 		logger.Errorf(LogPrefix, SSHStartFailed, sshError)

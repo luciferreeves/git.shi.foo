@@ -3,6 +3,7 @@ package sync
 import (
 	"encoding/json"
 	"strconv"
+	synchronization "sync"
 	"time"
 
 	"git.shi.foo/config"
@@ -17,6 +18,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/datatypes"
 )
+
+var fetchEnqueueLock synchronization.Mutex
 
 func Ingest(eventType string, signature string, body []byte) *fiber.Error {
 	if !github.VerifySignature(body, signature, config.GitHub.WebhookSecret) {
@@ -54,6 +57,9 @@ func handleRefChange(body []byte) {
 }
 
 func enqueueFetch(repoID uint, installationID int64) error {
+	fetchEnqueueLock.Lock()
+	defer fetchEnqueueLock.Unlock()
+
 	open, checkError := jobrepo.HasOpenForRepo(repoID, jobrepo.KindFetch)
 	if checkError != nil {
 		return checkError
@@ -62,7 +68,11 @@ func enqueueFetch(repoID uint, installationID int64) error {
 		return nil
 	}
 
-	payload, marshalError := json.Marshal(FetchPayload{InstallationID: strconv.FormatInt(installationID, 10)})
+	var resolvedInstallationID string
+	if installationID > 0 {
+		resolvedInstallationID = strconv.FormatInt(installationID, 10)
+	}
+	payload, marshalError := json.Marshal(FetchPayload{InstallationID: resolvedInstallationID})
 	if marshalError != nil {
 		return marshalError
 	}

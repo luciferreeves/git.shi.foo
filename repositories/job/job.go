@@ -33,10 +33,15 @@ func ClaimNext(now time.Time) (*models.Job, error) {
 			Clauses(clause.Locking{Strength: "UPDATE", Options: "SKIP LOCKED"}).
 			Where("status = ? AND run_after <= ?", StatusPending, now).
 			Order("run_after asc").
-			First(&candidate)
+			Order("id asc").
+			Limit(1).
+			Find(&candidate)
 
 		if selectResult.Error != nil {
 			return selectResult.Error
+		}
+		if selectResult.RowsAffected == 0 {
+			return nil
 		}
 
 		candidate.Status = StatusRunning
@@ -50,9 +55,6 @@ func ClaimNext(now time.Time) (*models.Job, error) {
 	})
 
 	if transactionError != nil {
-		if transactionError == gorm.ErrRecordNotFound {
-			return nil, nil
-		}
 		return nil, transactionError
 	}
 

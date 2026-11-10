@@ -25,5 +25,6 @@ func Upsert(userID uint, refreshToken string) error {
 	}
 
 	existing.RefreshToken = refreshToken
+	existing.ReauthorizationRequired = false
 	return database.DB.Save(existing).Error
 }

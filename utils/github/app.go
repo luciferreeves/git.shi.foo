@@ -1,6 +1,7 @@
 package github
 
 import (
+	"context"
 	"crypto"
 	"crypto/rand"
 	"crypto/rsa"
@@ -53,6 +54,10 @@ func appJWT() (string, error) {
 }
 
 func InstallationToken(installationID string) (string, time.Time, error) {
+	return InstallationTokenWithContext(context.Background(), installationID)
+}
+
+func InstallationTokenWithContext(requestContext context.Context, installationID string) (string, time.Time, error) {
 	token, jwtError := appJWT()
 	if jwtError != nil {
 		return "", time.Time{}, jwtError
@@ -60,7 +65,7 @@ func InstallationToken(installationID string) (string, time.Time, error) {
 
 	endpoint := fmt.Sprintf("%s/app/installations/%s/access_tokens", APIBase, installationID)
 
-	request, requestError := http.NewRequest(http.MethodPost, endpoint, nil)
+	request, requestError := http.NewRequestWithContext(requestContext, http.MethodPost, endpoint, nil)
 	if requestError != nil {
 		return "", time.Time{}, requestError
 	}

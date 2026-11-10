@@ -43,6 +43,3 @@ go.work.sum
 # OS generated files
 .DS_Store
 Thumbs.db
-
-# Skills and Docs
-*clau*
